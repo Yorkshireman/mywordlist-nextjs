@@ -20,8 +20,6 @@
   },
   "homepage": "https://github.com/Yorkshireman/mywordlist-nextjs#readme",
   "dependencies": {
-    "@material-ui/core": "^4.2.1",
-    "@material-ui/icons": "^4.2.1",
     "next": "^9.0.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

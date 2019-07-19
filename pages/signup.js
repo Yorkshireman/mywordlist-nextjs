@@ -1,108 +1,118 @@
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import React, { Component } from 'react';
 
-const useStyles = makeStyles(theme => ({
-  '@global': {
-    a: {
-      color: '#147DE0'
-    },
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+class SignUp extends Component {
+  static getInitialProps({ req }) {
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+    return { protocol }
+  }
 
-export default function SignUp() {
-  const classes = useStyles();
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: '',
+      error: '',
+      password: '',
+      username: ''
+    }
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="username"
-                name="username"
-                variant="outlined"
-                required
-                fullWidth
-                id="username"
-                label="Username (public)"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleChange({ target: { name, value } }) {
+    this.setState({ [name]: value })
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault()
+    const { email, password, username } = this.state;
+    const url = `${this.props.protocol}://localhost:3100/auth/register`
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'email': email,
+          'name': username,
+          'password': password
+        })
+      })
+      if (response.ok) {
+        const { message } = await response.json()
+        console.log('Registration request successful, message: ', message);
+      } else {
+        console.log('Registration failed.');
+        // https://github.com/developit/unfetch#caveats
+        // let error = new Error(response.statusText)
+        // error.response = response
+        // return Promise.reject(error)
+      }
+    } catch (error) {
+      console.error(
+        'You have an error in your code or there are Network issues.',
+        error
+      )
+      // throw new Error(error)
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <main className='signup'>
+          <form onSubmit={this.handleSubmit}>
+            <label htmlFor='username'>Username (public)</label>
+            <input
+              type='text'
+              id='username'
+              name='username'
+              value={this.state.username}
+              onChange={this.handleChange}
+            />
+            <label htmlFor='email'>Email</label>
+            <input
+              type='text'
+              id='email'
+              name='email'
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+            <label htmlFor='password'>Password</label>
+            <input
+              type='password'
+              id='password'
+              name='password'
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+            <button type='submit'>Sign Up</button>
+          </form>
           <Link href="/signin">
-            Already have an account? Sign in
+            <a>Already have an account? Sign in</a>
           </Link>
-        </form>
+        </main>
+        <style jsx>{`
+          .signup {
+            max-width: 340px;
+            margin: 0 auto;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+          }
+          form {
+            display: flex;
+            flex-flow: column;
+          }
+          input {
+            padding: 8px;
+            margin: 0.3rem 0 1rem;
+          }
+        `}</style>
       </div>
-    </Container>
-  );
+    )
+  }
 }
+
+export default SignUp;
