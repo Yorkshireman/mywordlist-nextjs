@@ -43,7 +43,7 @@ class SignUp extends Component {
 
       if (response.ok) {
         const { message } = await response.json();
-        console.log('Registration request successful, message: ', message);
+        console.log(message);
       } else {
         const error = new Error();
         const message = await response.text();
