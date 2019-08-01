@@ -29,6 +29,7 @@ class SignUp extends Component {
     const { email, password, username } = this.state;
     const url = `${this.props.protocol}://localhost:3100/auth/register`
 
+    // https://github.com/developit/unfetch#caveats
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -38,23 +39,19 @@ class SignUp extends Component {
           'name': username,
           'password': password
         })
-      })
+      });
+
       if (response.ok) {
-        const { message } = await response.json()
+        const { message } = await response.json();
         console.log('Registration request successful, message: ', message);
       } else {
-        console.log('Registration failed.');
-        // https://github.com/developit/unfetch#caveats
-        // let error = new Error(response.statusText)
-        // error.response = response
-        // return Promise.reject(error)
+        const error = new Error();
+        const message = await response.text();
+        error.message = `${response.status}, ${message}`;
+        throw error;
       }
     } catch (error) {
-      console.error(
-        'You have an error in your code or there are Network issues.',
-        error
-      )
-      // throw new Error(error)
+      console.log(error);
     }
   }
 
