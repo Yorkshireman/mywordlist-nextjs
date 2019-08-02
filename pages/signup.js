@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import React, { Component } from 'react';
+import Router from 'next/router';
 
 class SignUp extends Component {
-  static getInitialProps({ req }) {
+  static getInitialProps() {
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
     return { protocol }
   }
@@ -42,8 +43,7 @@ class SignUp extends Component {
       });
 
       if (response.ok) {
-        const { message } = await response.json();
-        console.log(message);
+        Router.push('/signin');
       } else {
         const error = new Error();
         const message = await response.text();
