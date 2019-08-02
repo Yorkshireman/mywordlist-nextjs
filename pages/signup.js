@@ -2,56 +2,28 @@ import Link from 'next/link';
 import React, { Component } from 'react';
 import Router from 'next/router';
 
+import AuthenticationService from '../services/authentication-service';
+
 class SignUp extends Component {
-  static getInitialProps() {
-    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-    return { protocol }
+  state = {
+    email: '',
+    error: '',
+    password: '',
+    username: ''
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      email: '',
-      error: '',
-      password: '',
-      username: ''
-    }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleChange({ target: { name, value } }) {
+  handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value })
   }
 
-  async handleSubmit(event) {
+  handleSubmit = async event => {
     event.preventDefault()
     const { email, password, username } = this.state;
-    const url = `${this.props.protocol}://localhost:3100/auth/register`
-
-    // https://github.com/developit/unfetch#caveats
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'email': email,
-          'name': username,
-          'password': password
-        })
-      });
-
-      if (response.ok) {
-        Router.push('/signin');
-      } else {
-        const error = new Error();
-        const message = await response.text();
-        error.message = `${response.status}, ${message}`;
-        throw error;
-      }
-    } catch (error) {
-      console.log(error);
+      await AuthenticationService.signUp({ email, password, username });
+      Router.push('/signin');
+    } catch (e) {
+      console.log(e);
     }
   }
 
