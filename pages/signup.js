@@ -92,18 +92,16 @@ class SignUp extends Component {
         </main>
         <style jsx>{`
           .signup {
-            max-width: 340px;
+            max-width: 20rem;
             margin: 0 auto;
             padding: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
           }
           form {
             display: flex;
             flex-flow: column;
           }
           input {
-            padding: 8px;
+            padding: 0.5rem;
             margin: 0.3rem 0 1rem;
           }
         `}</style>
