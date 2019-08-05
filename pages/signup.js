@@ -19,12 +19,8 @@ class SignUp extends Component {
   handleSubmit = async event => {
     event.preventDefault()
     const { email, password, username } = this.state;
-    try {
-      await AuthenticationService.signUp({ email, password, username });
-      Router.push('/signin');
-    } catch (e) {
-      console.log(e);
-    }
+    await AuthenticationService.signUp({ email, password, username });
+    Router.push('/signin');
   }
 
   render() {
