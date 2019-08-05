@@ -1,4 +1,5 @@
 import getConfig from 'next/config';
+import ServiceCaller from '../utils/service-caller';
 
 const { publicRuntimeConfig } = getConfig();
 const { AUTHENTICATION_SERVER_BASE_URL } = publicRuntimeConfig;
@@ -6,25 +7,19 @@ const { AUTHENTICATION_SERVER_BASE_URL } = publicRuntimeConfig;
 const AuthenticationService = {
   signUp: async formParams => {
     const { email, password, username } = formParams;
-    const path = '/auth/register';
-    const url = `${AUTHENTICATION_SERVER_BASE_URL}${path}`;
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    const service = {
       body: new URLSearchParams({
         'email': email,
         'name': username,
         'password': password
-      })
-    });
+      }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      method: 'POST',
+      url: `${AUTHENTICATION_SERVER_BASE_URL}/auth/register`
+    };
 
-    if (!response.ok) {
-      const error = new Error();
-      const message = await response.text();
-      error.message = `${response.status}, ${message}`;
-      throw error;
-    }
+    const serviceCaller = new ServiceCaller(service);
+    await serviceCaller.callService();
   }
 };
 
