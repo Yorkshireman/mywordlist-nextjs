@@ -1,8 +1,10 @@
+import ValidationError from '../errors/validation-error';
+
 class ServiceCaller {
   constructor(service) {
     const { body, headers, method, url } = service;
     if (!method || !url) {
-      throw new Error(); // refine
+      throw new ValidationError('method or url null/undefined.');
     }
 
     this.service = { body, headers, method, url };
