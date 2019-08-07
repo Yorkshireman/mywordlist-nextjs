@@ -1,18 +1,17 @@
 import RemoteServiceError from '../errors/remote-service-error';
 import ValidationError from '../errors/validation-error';
 
-class ServiceCaller {
-  constructor(service) {
-    const { body, headers, method, url } = service;
-    if (!method || !url) {
-      throw new ValidationError('method or url null/undefined.');
+export default class AbstractService {
+  constructor(baseUrl) {
+    if (!baseUrl) {
+      throw new ValidationError('baseUrl null/undefined.');
     }
 
-    this.service = { body, headers, method, url };
+    this.baseUrl = baseUrl;
   }
 
-  async callService() {
-    const { body, headers, method, url } = this.service;
+  async call({ body, headers, method, path }) {
+    const url = `${this.baseUrl}${path}`;
     const response = await fetch(url, {
       body,
       headers,
@@ -25,5 +24,3 @@ class ServiceCaller {
     }
   }
 };
-
-export default ServiceCaller;

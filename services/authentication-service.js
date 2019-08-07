@@ -1,26 +1,28 @@
+import AbstractService from './abstract-service';
 import getConfig from 'next/config';
-import ServiceCaller from '../utils/service-caller';
 
 const { publicRuntimeConfig } = getConfig();
 const { AUTHENTICATION_SERVER_BASE_URL } = publicRuntimeConfig;
 
-const AuthenticationService = {
-  signUp: async formParams => {
-    const { email, password, username } = formParams;
-    const service = {
-      body: new URLSearchParams({
-        'email': email,
-        'name': username,
-        'password': password
-      }),
+class AuthenticationService extends AbstractService {
+  constructor(baseUrl) {
+    super(baseUrl);
+  }
+
+  async signUp({ email, password, username }) {
+    const body = new URLSearchParams({
+      'email': email,
+      'name': username,
+      'password': password
+    });
+
+    await this.call({
+      body,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       method: 'POST',
-      url: `${AUTHENTICATION_SERVER_BASE_URL}/auth/register`
-    };
-
-    const serviceCaller = new ServiceCaller(service);
-    await serviceCaller.callService();
+      path: '/auth/register'
+    });
   }
-};
+}
 
-export default AuthenticationService;
+export default new AuthenticationService(AUTHENTICATION_SERVER_BASE_URL);
