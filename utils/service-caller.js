@@ -1,3 +1,4 @@
+import RemoteServiceError from '../errors/remote-service-error';
 import ValidationError from '../errors/validation-error';
 
 class ServiceCaller {
@@ -19,10 +20,8 @@ class ServiceCaller {
     });
 
     if (!response.ok) {
-      const error = new Error();
       const message = await response.text();
-      error.message = `${response.status}, ${message}`;
-      throw error;
+      throw new RemoteServiceError(response.status, message);
     }
   }
 };
