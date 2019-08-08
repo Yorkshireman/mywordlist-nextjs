@@ -1,6 +1,7 @@
 export default class RemoteServiceError extends Error {
-  constructor(status, message) {
-    super(`${status}, ${message}`);
+  constructor(statusCode, message) {
+    super(message);
     this.name = 'RemoteServiceError';
+    this.statusCode = statusCode;
   }
 }

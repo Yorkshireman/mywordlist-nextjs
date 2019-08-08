@@ -1,3 +1,4 @@
+import Error from 'next/error';
 import Link from 'next/link';
 import React, { Component } from 'react';
 import Router from 'next/router';
@@ -7,7 +8,6 @@ import AuthenticationService from '../services/authentication-service';
 class SignUp extends Component {
   state = {
     email: '',
-    error: '',
     password: '',
     username: ''
   }
@@ -19,11 +19,21 @@ class SignUp extends Component {
   handleSubmit = async event => {
     event.preventDefault()
     const { email, password, username } = this.state;
-    await AuthenticationService.signUp({ email, password, username });
+    try {
+      await AuthenticationService.signUp({ email, password, username });
+    } catch (error) {
+      return this.setState({ error });
+    }
+
     Router.push('/signin');
   }
 
   render() {
+    if (this.state.error) {
+      const { name, statusCode } = this.state.error;
+      return <Error statusCode={statusCode} title={name} />;
+    }
+
     return (
       <div>
         <main className='signup'>
