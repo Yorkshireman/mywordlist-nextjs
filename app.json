@@ -5,7 +5,9 @@
       "url": "heroku/nodejs"
     }
   ],
-  "env": {},
+  "env": {
+    "AUTHENTICATION_SERVER_BASE_URL": "https://some-url.com"
+  },
   "formation": {},
   "name": "mywordlist-nextjs",
   "scripts": {},
