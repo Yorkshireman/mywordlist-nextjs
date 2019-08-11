@@ -8,6 +8,5 @@
   "env": {},
   "formation": {},
   "name": "mywordlist-nextjs",
-  "scripts": {},
-  "stack": "heroku-18"
+  "scripts": {}
 }
