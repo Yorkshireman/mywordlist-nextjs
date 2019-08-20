@@ -13,11 +13,11 @@ class SignUp extends Component {
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value })
+    this.setState({ [name]: value });
   }
 
   handleSubmit = async event => {
-    event.preventDefault()
+    event.preventDefault();
     const { email, password, username } = this.state;
     try {
       await AuthenticationService.signUp({ email, password, username });
@@ -84,7 +84,7 @@ class SignUp extends Component {
           }
         `}</style>
       </div>
-    )
+    );
   }
 }
 

@@ -23,4 +23,4 @@ export default class AbstractService {
       throw new RemoteServiceError(response.status, message);
     }
   }
-};
+}
