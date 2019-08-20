@@ -1,4 +1,6 @@
 language: nodejs
+node_js:
+ - 10.15.0
 
 # before_install:
 #   - npm i -g npm@6.10.2
