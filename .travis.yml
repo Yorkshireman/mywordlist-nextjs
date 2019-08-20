@@ -1,6 +1,10 @@
 language: nodejs
+
 before_install:
   - npm i -g npm@6.10.2
+
+before_script:
+  - npm install
 
 script:
   - npm run lint
