@@ -13,7 +13,7 @@ class SignUp extends Component {
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value })
+    this.setState({ [name]: value });
   }
 
   handleSubmit = async event => {
