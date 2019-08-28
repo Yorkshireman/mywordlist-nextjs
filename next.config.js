@@ -6,4 +6,4 @@ module.exports = {
   publicRuntimeConfig: {
     AUTHENTICATION_SERVER_BASE_URL: process.env.AUTHENTICATION_SERVER_BASE_URL
   }
-}
+};
