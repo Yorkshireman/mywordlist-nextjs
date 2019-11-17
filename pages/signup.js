@@ -27,7 +27,7 @@ class SignUp extends Component {
       return this.setState({ error });
     }
 
-    Router.push('/signin');
+    Router.push('/');
   }
 
   render() {
