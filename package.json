@@ -10,6 +10,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next",
+    "lint": "eslint \"./**/*.js\"",
     "start": "next start -p $PORT",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,6 +30,9 @@
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "dotenv": "^8.0.0"
+    "babel-eslint": "^10.0.2",
+    "dotenv": "^8.0.0",
+    "eslint": "^6.2.1",
+    "eslint-plugin-react": "^7.14.3"
   }
 }

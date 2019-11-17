@@ -13,6 +13,6 @@ const SignInPage = () => {
       </Link>
     </div>
   );
-}
+};
 
 export default SignInPage;
