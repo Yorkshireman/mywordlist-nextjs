@@ -20,12 +20,14 @@ class SignUp extends Component {
     event.preventDefault();
     const { email, password, username } = this.state;
     try {
-      await AuthenticationService.signUp({ email, password, username });
+      const response = await AuthenticationService.signUp({ email, password, username });
+      const { data: { token } } = await response.json();
+      window.localStorage.setItem('myWordlistAuthToken', token);
     } catch (error) {
       return this.setState({ error });
     }
 
-    Router.push('/signin');
+    Router.push('/');
   }
 
   render() {

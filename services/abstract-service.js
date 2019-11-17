@@ -22,5 +22,7 @@ export default class AbstractService {
       const message = await response.text();
       throw new RemoteServiceError(response.status, message);
     }
+
+    return response;
   }
 }
