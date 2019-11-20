@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Router from 'next/router';
 
 import AuthenticationService from '../services/authentication-service';
+import ResourcesService from '../services/resources-service';
 
 class SignUp extends Component {
   state = {
@@ -20,9 +21,12 @@ class SignUp extends Component {
     event.preventDefault();
     const { email, password, username } = this.state;
     try {
-      const response = await AuthenticationService.signUp({ email, password, username });
+      let response = await AuthenticationService.signUp({ email, password, username });
       const { data: { token } } = await response.json();
       window.localStorage.setItem('myWordlistAuthToken', token);
+      response = await ResourcesService.createWordlist(token);
+      const { data: { token: authToken } } = await response.json();
+      window.localStorage.setItem('myWordlistAuthToken', authToken);
     } catch (error) {
       return this.setState({ error });
     }
