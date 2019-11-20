@@ -17,17 +17,23 @@ class SignUp extends Component {
     this.setState({ [name]: value });
   }
 
+  setAuthToken = async response => {
+    const { data: { token } } = await response.json();
+    window.localStorage.setItem('myWordlistAuthToken', token);
+    return token;
+  }
+
   handleSubmit = async event => {
     event.preventDefault();
     const { email, password, username } = this.state;
+    let token;
     try {
       let response = await AuthenticationService.signUp({ email, password, username });
-      const { data: { token } } = await response.json();
-      window.localStorage.setItem('myWordlistAuthToken', token);
+      token = await this.setAuthToken(response);
       response = await ResourcesService.createWordlist(token);
-      const { data: { token: authToken } } = await response.json();
-      window.localStorage.setItem('myWordlistAuthToken', authToken);
+      await this.setAuthToken(response);
     } catch (error) {
+      window.localStorage.setItem('myWordlistAuthToken', token);
       return this.setState({ error });
     }
 
