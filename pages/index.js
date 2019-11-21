@@ -11,16 +11,17 @@ class Home extends Component {
   async componentDidMount() {
     const token = window.localStorage.getItem('myWordlistAuthToken');
     const response = await ResourcesService.getWordlist(token);
-    const json = await response.json();
+    const wordlist = await response.json();
+    // could create a Wordlist model
     this.setState({
-      wordlist: JSON.stringify(json, null, 2)
+      wordlist: JSON.stringify(wordlist, null, 2)
     });
   }
 
   render() {
     return (
       <div>
-        <h3>Props:</h3>
+        <h3>this.state.wordlist:</h3>
         <p>{this.state.wordlist}</p>
       </div>
     );
