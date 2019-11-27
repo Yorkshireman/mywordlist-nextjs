@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = {
   publicRuntimeConfig: {
     AUTHENTICATION_SERVER_BASE_URL: process.env.AUTHENTICATION_SERVER_BASE_URL,
+    NODE_ENV: process.env.NODE_ENV,
     RESOURCES_SERVER_BASE_URL: process.env.RESOURCES_SERVER_BASE_URL
   }
 };

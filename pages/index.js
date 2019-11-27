@@ -1,6 +1,11 @@
+import Error from 'next/error';
 import React, { Component } from 'react';
 
+import getConfig from 'next/config';
 import ResourcesService from '../services/resources-service';
+
+const { publicRuntimeConfig } = getConfig();
+const { NODE_ENV } = publicRuntimeConfig;
 
 class Home extends Component {
   constructor(props) {
@@ -9,8 +14,18 @@ class Home extends Component {
   }
 
   async componentDidMount() {
+    let response;
     const token = window.localStorage.getItem('myWordlistAuthToken');
-    const response = await ResourcesService.getWordlist(token);
+    try {
+      response = await ResourcesService.getWordlist(token);
+    } catch(error) {
+      if (NODE_ENV !== 'production') {
+        console.log(error);
+      }
+
+      return this.setState({ error });
+    }
+
     const wordlist = await response.json();
     // could create a Wordlist model
     this.setState({
@@ -19,6 +34,11 @@ class Home extends Component {
   }
 
   render() {
+    if (this.state.error) {
+      const { name, statusCode } = this.state.error;
+      return <Error statusCode={statusCode} title={name} />;
+    }
+
     return (
       <div>
         <h3>this.state.wordlist:</h3>
