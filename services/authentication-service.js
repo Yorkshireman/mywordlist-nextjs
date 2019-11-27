@@ -9,6 +9,22 @@ class AuthenticationService extends AbstractService {
     super(baseUrl);
   }
 
+  async signIn({ email, password }) {
+    const body = JSON.stringify({
+      user: {
+        email,
+        password
+      }
+    });
+
+    return await this.call({
+      body,
+      headers: { 'Content-Type': 'application/vnd.api+json' },
+      method: 'POST',
+      path: '/signin'
+    });
+  }
+
   async signUp({ email, password, username: name }) {
     const body = JSON.stringify({
       user: {
