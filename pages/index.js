@@ -1,11 +1,7 @@
 import Error from 'next/error';
 import React, { Component } from 'react';
 
-import getConfig from 'next/config';
 import ResourcesService from '../services/resources-service';
-
-const { publicRuntimeConfig } = getConfig();
-const { NODE_ENV } = publicRuntimeConfig;
 
 class Home extends Component {
   constructor(props) {
@@ -19,10 +15,6 @@ class Home extends Component {
     try {
       response = await ResourcesService.getWordlist(token);
     } catch(error) {
-      if (NODE_ENV !== 'production') {
-        console.log(error);
-      }
-
       return this.setState({ error });
     }
 
