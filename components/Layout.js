@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Head from 'next/head';
 import Header from './Header';
 import Footer from './Footer';
@@ -6,11 +7,11 @@ const Layout = props => (
   <div className='Layout'>
     <Head>
       <title>MyWordlist</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta charSet="utf-8" />
+      <meta name='viewport' content='width=device-width, initial-scale=1' />
+      <meta charSet='utf-8' />
     </Head>
     <Header />
-    <div className='Content'>{props.children}</div>
+    <div className='Content container'>{props.children}</div>
     <Footer />
     <style jsx global>{`
       * {

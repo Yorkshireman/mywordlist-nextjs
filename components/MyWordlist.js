@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import ResourcesService from '../services/resources-service';
 
-class Home extends Component {
+class MyWordlist extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -40,4 +40,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default MyWordlist;
