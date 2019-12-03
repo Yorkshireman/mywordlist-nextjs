@@ -1,6 +1,12 @@
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from 'reactstrap';
 import Error from 'next/error';
 import Head from 'next/head';
-import Link from 'next/link';
 import React, { Component } from 'react';
 import Router from 'next/router';
 
@@ -46,45 +52,31 @@ class SignIn extends Component {
         <Head>
           <title>MyWordlist | Signin</title>
         </Head>
-        <main className='signin'>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor='email'>Email</label>
-            <input
-              type='text'
+        <Form onSubmit={this.handleSubmit}>
+          <FormGroup>
+            <Label htmlFor='email'>Email</Label>
+            <Input
               id='email'
               name='email'
-              value={this.state.email}
               onChange={this.handleChange}
+              placeholder='valid@email.com'
+              type='email'
+              value={this.state.email}
             />
-            <label htmlFor='password'>Password</label>
-            <input
-              type='password'
+          </FormGroup>
+          <FormGroup>
+            <Label htmlFor='password'>Password</Label>
+            <Input
               id='password'
               name='password'
-              value={this.state.password}
               onChange={this.handleChange}
+              placeholder='password placeholder'
+              type='password'
+              value={this.state.password}
             />
-            <button type='submit'>Sign In</button>
-          </form>
-          <Link href="/signup">
-            <a>Don't have an account? Sign Up</a>
-          </Link>
-        </main>
-        <style jsx>{`
-            .signin {
-              max-width: 20rem;
-              margin: 0 auto;
-              padding: 1rem;
-            }
-            form {
-              display: flex;
-              flex-flow: column;
-            }
-            input {
-              padding: 0.5rem;
-              margin: 0.3rem 0 1rem;
-            }
-          `}</style>
+          </FormGroup>
+          <Button>Submit</Button>
+        </Form>
       </div>
     );
   }
