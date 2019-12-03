@@ -25,9 +25,12 @@
   },
   "homepage": "https://github.com/Yorkshireman/mywordlist-nextjs#readme",
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "bootstrap": "^4.4.1",
     "next": "^9.0.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "reactstrap": "^8.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",
