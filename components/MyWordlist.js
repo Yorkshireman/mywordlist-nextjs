@@ -1,7 +1,10 @@
+import { Button } from 'reactstrap';
 import Error from 'next/error';
 import React, { Component } from 'react';
 
 import ResourcesService from '../services/resources-service';
+import { setAuthToken } from './helpers/setAuthToken';
+import { Wordlist } from '../models/wordlist';
 
 class MyWordlist extends Component {
   constructor(props) {
@@ -10,18 +13,20 @@ class MyWordlist extends Component {
   }
 
   async componentDidMount() {
+    const currentToken = window.localStorage.getItem('myWordlistAuthToken');
     let response;
-    const token = window.localStorage.getItem('myWordlistAuthToken');
+
     try {
-      response = await ResourcesService.getWordlist(token);
+      response = await ResourcesService.getWordlist(currentToken);
+      response = await response.json();
+      const { data: { token: newToken } } = response;
+      await setAuthToken(newToken);
     } catch (error) {
       return this.setState({ error });
     }
 
-    const wordlist = await response.json();
-    // could create a Wordlist model
     this.setState({
-      wordlist: JSON.stringify(wordlist, null, 2)
+      wordlist: Wordlist(response.data.attributes)
     });
   }
 
@@ -31,10 +36,10 @@ class MyWordlist extends Component {
       return <Error statusCode={statusCode} title={name} />;
     }
 
+    if (!this.state.wordlist) return null;
+    if (!this.state.wordlist.entries) return <Button>Add Word</Button>;
     return (
       <div>
-        <h3>this.state.wordlist:</h3>
-        <p>{this.state.wordlist}</p>
       </div>
     );
   }

@@ -11,6 +11,7 @@ import React, { Component } from 'react';
 import Router from 'next/router';
 
 import AuthenticationService from '../services/authentication-service';
+import { setAuthToken } from './helpers/setAuthToken';
 
 class SignIn extends Component {
   state = {
@@ -22,23 +23,18 @@ class SignIn extends Component {
     this.setState({ [name]: value });
   }
 
-  setAuthToken = async response => {
-    const { data: { token } } = await response.json();
-    window.localStorage.setItem('myWordlistAuthToken', token);
-    return token;
-  }
-
   handleSubmit = async event => {
     event.preventDefault();
     const { email, password } = this.state;
     try {
       const response = await AuthenticationService.signIn({ email, password });
-      await this.setAuthToken(response);
+      const { data: { token } } = await response.json();
+      await setAuthToken(token);
     } catch (error) {
       return this.setState({ error });
     }
 
-    Router.push('/');
+    Router.push('/mywordlist');
   }
 
   render() {

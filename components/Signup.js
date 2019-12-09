@@ -5,6 +5,7 @@ import Router from 'next/router';
 
 import AuthenticationService from '../services/authentication-service';
 import ResourcesService from '../services/resources-service';
+import { setAuthToken } from './helpers/setAuthToken';
 
 class SignUp extends Component {
   state = {
@@ -17,27 +18,24 @@ class SignUp extends Component {
     this.setState({ [name]: value });
   }
 
-  setAuthToken = async response => {
-    const { data: { token } } = await response.json();
-    window.localStorage.setItem('myWordlistAuthToken', token);
-    return token;
-  }
-
   handleSubmit = async event => {
     event.preventDefault();
     const { email, password, username } = this.state;
     let token;
     try {
       let response = await AuthenticationService.signUp({ email, password, username });
-      token = await this.setAuthToken(response);
+      response = await response.json();
+      token = response.data.token;
       response = await ResourcesService.createWordlist(token);
-      await this.setAuthToken(response);
+      response = await response.json();
+      token = response.data.token;
     } catch (error) {
-      window.localStorage.setItem('myWordlistAuthToken', token);
+      token && await setAuthToken(token);
       return this.setState({ error });
     }
 
-    Router.push('/');
+    await setAuthToken(token);
+    Router.push('/mywordlist');
   }
 
   render() {
