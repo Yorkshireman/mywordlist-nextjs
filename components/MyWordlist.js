@@ -7,7 +7,8 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  ModalFooter
+  ModalFooter,
+  Table
 } from 'reactstrap';
 
 import Error from 'next/error';
@@ -21,6 +22,7 @@ class MyWordlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      entries: [],
       modal: false,
       wordlistEntrySubmissionDescription: '',
       wordlistEntrySubmissionWord: ''
@@ -39,11 +41,12 @@ class MyWordlist extends Component {
     } = this.state;
     this.togglemodal();
     this.setState({
-      wordlist: Wordlist({
-        entries: [
-          { description, word }
-        ]
-      })
+      entries: [
+        ...this.state.entries,
+        { description, word }
+      ],
+      wordlistEntrySubmissionDescription: '',
+      wordlistEntrySubmissionWord: ''
     });
 
     // try {
@@ -78,57 +81,74 @@ class MyWordlist extends Component {
     });
   }
 
+  renderEntries(entries) {
+    return entries.map(({ description, word }, index) => {
+      return (
+        <tr key={index}>
+          <td>{word}</td>
+          <td>{description}</td>
+        </tr>
+      );
+    });
+  }
+
   render() {
     if (this.state.error) {
       const { name, statusCode } = this.state.error;
       return <Error statusCode={statusCode} title={name} />;
     }
 
-    if (!this.state.wordlist) return null;
-    if (!this.state.wordlist.entries) {
-      return (
-        <div>
-          <Button onClick={this.togglemodal}>Add Word</Button>
-          <Modal isOpen={this.state.modal} toggle={this.togglemodal}>
-            <ModalHeader toggle={this.togglemodal}>Modal title</ModalHeader>
-            <ModalBody>
-              <Form onSubmit={this.handleSubmit}>
-                <FormGroup>
-                  <Label htmlFor='word'>Word</Label>
-                  <Input
-                    id='wordlistEntrySubmissionWord'
-                    name='wordlistEntrySubmissionWord'
-                    onChange={this.handleChange}
-                    placeholder='word'
-                    type='text'
-                    value={this.state.wordlistEntrySubmissionWord}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor='description'>description</Label>
-                  <Input
-                    id='wordlistEntrySubmissionDescription'
-                    name='wordlistEntrySubmissionDescription'
-                    onChange={this.handleChange}
-                    placeholder='description'
-                    type='text'
-                    value={this.state.wordlistEntrySubmissionDescription}
-                  />
-                </FormGroup>
-                <Button>Submit</Button>
-              </Form>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="secondary" onClick={this.togglemodal}>Cancel</Button>
-            </ModalFooter>
-          </Modal>
-        </div>
-      );
-    }
-
     return (
       <div>
-        {this.state.wordlist.entries[0].word}
+        <Button onClick={this.togglemodal}>Add Word</Button>
+        <Modal isOpen={this.state.modal} toggle={this.togglemodal}>
+          <ModalHeader toggle={this.togglemodal}>Modal title</ModalHeader>
+          <ModalBody>
+            <Form onSubmit={this.handleSubmit}>
+              <FormGroup>
+                <Label htmlFor='word'>Word</Label>
+                <Input
+                  id='wordlistEntrySubmissionWord'
+                  name='wordlistEntrySubmissionWord'
+                  onChange={this.handleChange}
+                  placeholder='word'
+                  type='text'
+                  value={this.state.wordlistEntrySubmissionWord}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor='description'>description</Label>
+                <Input
+                  id='wordlistEntrySubmissionDescription'
+                  name='wordlistEntrySubmissionDescription'
+                  onChange={this.handleChange}
+                  placeholder='description'
+                  type='text'
+                  value={this.state.wordlistEntrySubmissionDescription}
+                />
+              </FormGroup>
+              <Button>Submit</Button>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.togglemodal}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        { (this.state.entries.length || null) &&
+          <main>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Word</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.renderEntries(this.state.entries)}
+              </tbody>
+            </Table>
+          </main>
+        }
       </div>
     );
   }
