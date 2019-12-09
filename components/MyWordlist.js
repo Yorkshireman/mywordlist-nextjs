@@ -1,5 +1,9 @@
 import {
   Button,
+  Form,
+  FormGroup,
+  Input,
+  Label,
   Modal,
   ModalBody,
   ModalHeader,
@@ -17,8 +21,38 @@ class MyWordlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      wordlistEntrySubmissionDescription: '',
+      wordlistEntrySubmissionWord: ''
     };
+  }
+
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
+  }
+
+  handleSubmit = async event => {
+    event.preventDefault();
+    const {
+      wordlistEntrySubmissionDescription: description,
+      wordlistEntrySubmissionWord: word
+    } = this.state;
+    this.togglemodal();
+    this.setState({
+      wordlist: Wordlist({
+        entries: [
+          { description, word }
+        ]
+      })
+    });
+
+    // try {
+    //   const response = await ResourcesService.createWordlistEntry({ description, word });
+    //   const { data: { token } } = await response.json();
+    //   await setAuthToken(token);
+    // } catch (error) {
+    //   return this.setState({ error });
+    // }
   }
 
   togglemodal = () => {
@@ -58,10 +92,33 @@ class MyWordlist extends Component {
           <Modal isOpen={this.state.modal} toggle={this.togglemodal}>
             <ModalHeader toggle={this.togglemodal}>Modal title</ModalHeader>
             <ModalBody>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <Form onSubmit={this.handleSubmit}>
+                <FormGroup>
+                  <Label htmlFor='word'>Word</Label>
+                  <Input
+                    id='wordlistEntrySubmissionWord'
+                    name='wordlistEntrySubmissionWord'
+                    onChange={this.handleChange}
+                    placeholder='word'
+                    type='text'
+                    value={this.state.wordlistEntrySubmissionWord}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label htmlFor='description'>description</Label>
+                  <Input
+                    id='wordlistEntrySubmissionDescription'
+                    name='wordlistEntrySubmissionDescription'
+                    onChange={this.handleChange}
+                    placeholder='description'
+                    type='text'
+                    value={this.state.wordlistEntrySubmissionDescription}
+                  />
+                </FormGroup>
+                <Button>Submit</Button>
+              </Form>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.togglemodal}>Do Something</Button>{' '}
               <Button color="secondary" onClick={this.togglemodal}>Cancel</Button>
             </ModalFooter>
           </Modal>
@@ -71,6 +128,7 @@ class MyWordlist extends Component {
 
     return (
       <div>
+        {this.state.wordlist.entries[0].word}
       </div>
     );
   }

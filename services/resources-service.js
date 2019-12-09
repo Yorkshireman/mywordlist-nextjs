@@ -9,6 +9,17 @@ class ResourcesService extends AbstractService {
     super(baseUrl);
   }
 
+  async createWordlistEntry(token, word) {
+    return await this.call({
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/vnd.api+json'
+      },
+      method: 'POST',
+      path: '/wordlist-entries'
+    });
+  }
+
   async createWordlist(token) {
     return await this.call({
       headers: {
