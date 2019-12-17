@@ -2,6 +2,7 @@ import Error from 'next/error';
 import React, { useEffect, useState } from 'react';
 
 import ResourcesService from '../services/resources-service';
+import { setAuthToken } from './helpers/setAuthToken';
 
 const MyWordlist = () => {
   const [error, setError] = useState();
@@ -9,19 +10,21 @@ const MyWordlist = () => {
   const [wordlist, setWordlist] = useState();
 
   const fetchWordlist = async () => {
+    const currentToken = window.localStorage.getItem('myWordlistAuthToken');
     let response;
-    const token = window.localStorage.getItem('myWordlistAuthToken');
     try {
-      response = await ResourcesService.getWordlist(token);
+      response = await ResourcesService.getWordlist(currentToken);
+      response = await response.json();
+      const { data: { token: newToken } } = response;
+      await setAuthToken(newToken);
     } catch (e) {
       setLoading(false);
       return setError(e);
     }
 
-    const responseJson = await response.json();
     setLoading(false);
-    setWordlist(responseJson.data.type);
-  }
+    setWordlist(response.data.type);
+  };
 
   useEffect(() => {
     fetchWordlist();
