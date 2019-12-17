@@ -7,61 +7,58 @@ import {
 } from 'reactstrap';
 import Error from 'next/error';
 import Head from 'next/head';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Router from 'next/router';
 
 import AuthenticationService from '../services/authentication-service';
+import { setAuthToken } from './helpers/setAuthToken';
 
-class SignIn extends Component {
-  state = {
-    email: '',
-    password: ''
-  }
+const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState('');
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  }
+  const handleChange = ({ target: { name, value } }) => {
+    if (name === 'email') {
+      return setEmail(value);
+    }
 
-  setAuthToken = async response => {
-    const { data: { token } } = await response.json();
-    window.localStorage.setItem('myWordlistAuthToken', token);
-    return token;
-  }
+    if (name === 'password') {
+      setPassword(value);
+    }
+  };
 
-  handleSubmit = async event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    const { email, password } = this.state;
+    setLoading(true);
     try {
       const response = await AuthenticationService.signIn({ email, password });
-      await this.setAuthToken(response);
-    } catch (error) {
-      return this.setState({ error });
+      const { data: { token: newToken } } = await response.json();
+      await setAuthToken(newToken);
+    } catch (e) {
+      return setError(e);
     }
 
     Router.push('/');
-  }
+  };
 
-  render() {
-    if (this.state.error) {
-      const { name, statusCode } = this.state.error;
-      return <Error statusCode={statusCode} title={name} />;
-    }
-
-    return (
-      <div>
-        <Head>
-          <title>MyWordlist | Signin</title>
-        </Head>
-        <Form onSubmit={this.handleSubmit}>
+  return (
+    <div>
+      <Head>
+        <title>MyWordlist | Signin</title>
+      </Head>
+      { error ? <Error statusCode={error.statusCode} title={error.name} /> :
+        <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label htmlFor='email'>Email</Label>
             <Input
               id='email'
               name='email'
-              onChange={this.handleChange}
+              onChange={handleChange}
               placeholder='valid@email.com'
               type='email'
-              value={this.state.email}
+              value={email}
             />
           </FormGroup>
           <FormGroup>
@@ -69,17 +66,19 @@ class SignIn extends Component {
             <Input
               id='password'
               name='password'
-              onChange={this.handleChange}
+              onChange={handleChange}
               placeholder='password placeholder'
               type='password'
-              value={this.state.password}
+              value={password}
             />
           </FormGroup>
-          <Button>Submit</Button>
+          { loading ? <p>Loading...</p> :
+            <Button>Submit</Button>
+          }
         </Form>
-      </div>
-    );
-  }
-}
+      }
+    </div>
+  );
+};
 
 export default SignIn;
