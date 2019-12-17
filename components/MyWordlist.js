@@ -1,43 +1,39 @@
 import Error from 'next/error';
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ResourcesService from '../services/resources-service';
 
-class MyWordlist extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const MyWordlist = () => {
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
+  const [wordlist, setWordlist] = useState();
 
-  async componentDidMount() {
+  const fetchWordlist = async () => {
     let response;
     const token = window.localStorage.getItem('myWordlistAuthToken');
     try {
       response = await ResourcesService.getWordlist(token);
-    } catch (error) {
-      return this.setState({ error });
+    } catch (e) {
+      setLoading(false);
+      return setError(e);
     }
 
-    const wordlist = await response.json();
-    // could create a Wordlist model
-    this.setState({
-      wordlist: JSON.stringify(wordlist, null, 2)
-    });
+    const responseJson = await response.json();
+    setLoading(false);
+    setWordlist(responseJson.data.type);
   }
 
-  render() {
-    if (this.state.error) {
-      const { name, statusCode } = this.state.error;
-      return <Error statusCode={statusCode} title={name} />;
-    }
+  useEffect(() => {
+    fetchWordlist();
+  }, []);
 
-    return (
-      <div>
-        <h3>this.state.wordlist:</h3>
-        <p>{this.state.wordlist}</p>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {loading && <p>Loading...</p>}
+      {error && <Error statusCode={error.statusCode} title={error.name} />}
+      {wordlist && <p>{wordlist}</p>}
+    </div>
+  );
+};
 
 export default MyWordlist;
