@@ -30,6 +30,17 @@ class ResourcesService extends AbstractService {
       path: '/wordlist'
     });
   }
+
+  async getWordlistEntries(token) {
+    return await this.call({
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/vnd.api+json'
+      },
+      method: 'GET',
+      path: '/wordlist_entries'
+    });
+  }
 }
 
 export default new ResourcesService(RESOURCES_SERVER_BASE_URL);
