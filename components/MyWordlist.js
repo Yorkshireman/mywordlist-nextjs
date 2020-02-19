@@ -9,6 +9,12 @@ const MyWordlist = () => {
   const [loading, setLoading] = useState(true);
   const [wordlistEntries, setWordlistEntries] = useState();
 
+  // refactor into a WordlistEntry component
+  const buildWordlistEntries = wordlistData => {
+    const array = Object.values(wordlistData.data.wordlist_entries);
+    return array.map(({ attributes: { description, word } }) => ({ description, word }));
+  };
+
   const fetchWordlist = async () => {
     const currentToken = window.localStorage.getItem('myWordlistAuthToken');
     let response;
@@ -25,12 +31,14 @@ const MyWordlist = () => {
     }
 
     setLoading(false);
-    // console.log(JSON.stringify(Object.values(response.data.wordlist_entries), null, 2));
-    // console.log(Object.values(response.data.wordlist_entries));
-    console.log('response: ', response);
-    setWordlistEntries('hello');
+    setWordlistEntries(buildWordlistEntries(response));
+  };
 
-    console.log('wordlistEntries: ', wordlistEntries);
+  const renderWordlistEntries = wordlistEntries => {
+    return wordlistEntries.map((entry, index) => {
+      // use the word.name as the key once the backend never sends duplicate words
+      return <p key={index}>{entry.word.name}: {entry.description}</p>;
+    });
   };
 
   useEffect(() => {
@@ -41,7 +49,7 @@ const MyWordlist = () => {
     <div>
       {loading && <p>Loading...</p>}
       {error && <Error statusCode={error.statusCode} title={error.name} />}
-      {/* {wordlistEntries && <p>{wordlistEntries}</p>} */}
+      {wordlistEntries && renderWordlistEntries(wordlistEntries)}
     </div>
   );
 };
