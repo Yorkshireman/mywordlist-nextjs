@@ -55,7 +55,7 @@ const SignUp = () => {
       <Head>
         <title>MyWordlist | Signup</title>
       </Head>
-      { error ? <Error statusCode={error.statusCode} title={error.name} /> :
+      {error ? <Error statusCode={error.statusCode} title={error.name} /> :
         <div>
           <main className='signup'>
             <form onSubmit={handleSubmit}>
@@ -83,7 +83,7 @@ const SignUp = () => {
                 value={password}
                 onChange={handleChange}
               />
-              { loading ? <p>Loading...</p> :
+              {loading ? <p>Loading...</p> :
                 <button type='submit'>Sign Up</button>
               }
             </form>

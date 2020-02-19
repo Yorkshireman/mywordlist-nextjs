@@ -48,7 +48,7 @@ const SignIn = () => {
       <Head>
         <title>MyWordlist | Signin</title>
       </Head>
-      { error ? <Error statusCode={error.statusCode} title={error.name} /> :
+      {error ? <Error statusCode={error.statusCode} title={error.name} /> :
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label htmlFor='email'>Email</Label>
@@ -72,7 +72,7 @@ const SignIn = () => {
               value={password}
             />
           </FormGroup>
-          { loading ? <p>Loading...</p> :
+          {loading ? <p>Loading...</p> :
             <Button>Submit</Button>
           }
         </Form>
