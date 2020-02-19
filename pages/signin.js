@@ -1,18 +1,6 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import React from 'react';
+import Layout from '../components/Layout';
+import Signin from '../components/Signin';
 
-const SignInPage = () => {
-  return (
-    <div>
-      <Head>
-        <title>MyWordlist | Signin</title>
-      </Head>
-      <Link href="/signup">
-        <a>Don't have an account? Sign Up</a>
-      </Link>
-    </div>
-  );
-}
+const SigninView = () => <Layout><Signin /></Layout>;
 
-export default SignInPage;
+export default SigninView;

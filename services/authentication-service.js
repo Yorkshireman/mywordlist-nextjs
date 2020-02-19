@@ -9,18 +9,36 @@ class AuthenticationService extends AbstractService {
     super(baseUrl);
   }
 
-  async signUp({ email, password, username }) {
-    const body = new URLSearchParams({
-      'email': email,
-      'name': username,
-      'password': password
+  async signIn({ email, password }) {
+    const body = JSON.stringify({
+      user: {
+        email,
+        password
+      }
     });
 
-    await this.call({
+    return await this.call({
       body,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: { 'Content-Type': 'application/vnd.api+json' },
       method: 'POST',
-      path: '/auth/register'
+      path: '/signin'
+    });
+  }
+
+  async signUp({ email, password, username: name }) {
+    const body = JSON.stringify({
+      user: {
+        email,
+        name,
+        password
+      }
+    });
+
+    return await this.call({
+      body,
+      headers: { 'Content-Type': 'application/vnd.api+json' },
+      method: 'POST',
+      path: '/signup'
     });
   }
 }

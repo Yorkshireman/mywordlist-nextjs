@@ -2,8 +2,11 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-module.exports = {
+const withCSS = require('@zeit/next-css');
+
+module.exports = withCSS({
   publicRuntimeConfig: {
-    AUTHENTICATION_SERVER_BASE_URL: process.env.AUTHENTICATION_SERVER_BASE_URL
+    AUTHENTICATION_SERVER_BASE_URL: process.env.AUTHENTICATION_SERVER_BASE_URL,
+    RESOURCES_SERVER_BASE_URL: process.env.RESOURCES_SERVER_BASE_URL
   }
-}
+});
