@@ -1,47 +1,12 @@
-import { Table } from 'reactstrap';
+import WordlistEntry from './WordlistEntry';
 
 const MyWordlist = ({ wordlistEntriesData }) => {
-  const tableRows = wordlistEntriesData.map((entry, index) => {
-    // use the word.name as the key once the backend never sends duplicate words
-    return <tr key={index}>
-      <th scope='row'>{entry.word.name}</th>
-      <td>{entry.description}</td>
-      <td>noun home country verb pet</td>
-      <style jsx>{`
-        td {
-          padding: 0;
-        }
-
-        th {
-          padding: 0;
-        }
-      `}</style>
-    </tr>;
+  const renderWordlistEntries = entries => entries.map((entry, index) => {
+    const { description, word: { name } } = entry;
+    return <WordlistEntry key={index} description={description} name={name} />;
   });
 
-  return (
-    <Table responsive>
-      <thead>
-        <tr>
-          <th>Word</th>
-          <th>Description</th>
-          <th>Categories</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tableRows}
-      </tbody>
-      <style jsx>{`
-        td {
-          padding: 0;
-        }
-
-        th {
-          padding: 0;
-        }
-      `}</style>
-    </Table>
-  );
+  return renderWordlistEntries(wordlistEntriesData);
 };
 
 export default MyWordlist;
