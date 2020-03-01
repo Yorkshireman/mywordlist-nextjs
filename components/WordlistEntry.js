@@ -1,11 +1,13 @@
-const WordlistEntry = ({ description, name}) => {
+const WordlistEntry = ({ description, name, showDescriptions}) => {
   return (
     <>
       <div>
         <section style={{ paddingRight: '1em' }}>
           <strong>{name}</strong>
         </section>
-        <section>{description}</section>
+        {showDescriptions &&
+          <section>{description}</section>
+        }
       </div>
       <style jsx>{`
         div {
