@@ -29,7 +29,6 @@ const Header = () => {
               <NavLink href="/mywordlist">My Wordlist</NavLink>
             </NavItem>
           </Nav>
-          {/* <NavbarText>Simple Text</NavbarText> */}
         </Collapse>
       </Navbar>
     </div>

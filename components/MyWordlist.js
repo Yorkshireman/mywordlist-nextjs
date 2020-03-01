@@ -6,20 +6,42 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     return <tr key={index}>
       <th scope='row'>{entry.word.name}</th>
       <td>{entry.description}</td>
+      <td>noun home country verb pet</td>
+      <style jsx>{`
+        td {
+          padding: 0;
+        }
+
+        th {
+          padding: 0;
+        }
+      `}</style>
     </tr>;
   });
 
-  return <Table responsive>
-    <thead>
-      <tr>
-        <th>Word</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      {tableRows}
-    </tbody>
-  </Table>;
+  return (
+    <Table responsive>
+      <thead>
+        <tr>
+          <th>Word</th>
+          <th>Description</th>
+          <th>Categories</th>
+        </tr>
+      </thead>
+      <tbody>
+        {tableRows}
+      </tbody>
+      <style jsx>{`
+        td {
+          padding: 0;
+        }
+
+        th {
+          padding: 0;
+        }
+      `}</style>
+    </Table>
+  );
 };
 
 export default MyWordlist;
