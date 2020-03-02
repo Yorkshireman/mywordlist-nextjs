@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
-import MyWordlist from '../components/MyWordlist';
+import MyWordlistContainer from '../containers/MyWordlistContainer';
 
-const MyWordlistView = () => <Layout><MyWordlist /></Layout>;
+const MyWordlistView = () => <Layout><MyWordlistContainer /></Layout>;
 
 export default MyWordlistView;

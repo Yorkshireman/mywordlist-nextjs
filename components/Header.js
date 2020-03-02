@@ -17,19 +17,18 @@ const Header = () => {
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">MyWordlist</NavbarBrand>
+      <Navbar color='light' light expand='md'>
+        <NavbarBrand href='/'>MyWordlist</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
+          <Nav className='mr-auto' navbar>
             <NavItem>
-              <NavLink href="/signin">Sign In</NavLink>
+              <NavLink href='/signin'>Sign In</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/mywordlist">My Wordlist</NavLink>
+              <NavLink href='/mywordlist'>My Wordlist</NavLink>
             </NavItem>
           </Nav>
-          {/* <NavbarText>Simple Text</NavbarText> */}
         </Collapse>
       </Navbar>
     </div>

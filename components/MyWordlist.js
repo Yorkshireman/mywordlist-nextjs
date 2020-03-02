@@ -1,41 +1,43 @@
-import Error from 'next/error';
-import React, { useEffect, useState } from 'react';
+import { FormGroup, Input, Label } from 'reactstrap';
+import { useState } from 'react';
 
-import ResourcesService from '../services/resources-service';
-import { setAuthToken } from './helpers/setAuthToken';
+import WordlistEntry from './WordlistEntry';
 
-const MyWordlist = () => {
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState(true);
-  const [wordlist, setWordlist] = useState();
+const MyWordlist = ({ wordlistEntriesData }) => {
+  const [showDescriptions, setShowDescriptions] = useState(true);
 
-  const fetchWordlist = async () => {
-    const currentToken = window.localStorage.getItem('myWordlistAuthToken');
-    let response;
-    try {
-      response = await ResourcesService.getWordlist(currentToken);
-      response = await response.json();
-      const { data: { token: newToken } } = response;
-      await setAuthToken(newToken);
-    } catch (e) {
-      setLoading(false);
-      return setError(e);
-    }
-
-    setLoading(false);
-    setWordlist(response.data.type);
+  const handleChange = ({ target: { checked } }) => {
+    setShowDescriptions(checked);
   };
 
-  useEffect(() => {
-    fetchWordlist();
-  }, []);
+  const renderWordlistEntries = entries => entries.map((entry, index) => {
+    const { description, word: { name } } = entry;
+    return (
+      <WordlistEntry
+        description={description}
+        key={index}
+        name={name}
+        showDescriptions={showDescriptions}
+      />
+    );
+  });
 
   return (
-    <div>
-      {loading && <p>Loading...</p>}
-      {error && <Error statusCode={error.statusCode} title={error.name} />}
-      {wordlist && <p>{wordlist}</p>}
-    </div>
+    <>
+      <div style={{ marginBottom: '0.5em' }}>
+        <FormGroup check>
+          <Label check>
+            <Input
+              defaultChecked={showDescriptions}
+              onChange={handleChange}
+              type='checkbox'
+            />
+            Descriptions
+          </Label>
+        </FormGroup>
+      </div>
+      {renderWordlistEntries(wordlistEntriesData)}
+    </>
   );
 };
 

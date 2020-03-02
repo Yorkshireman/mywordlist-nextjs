@@ -40,7 +40,7 @@ const SignIn = () => {
       return setError(e);
     }
 
-    Router.push('/');
+    Router.push('/mywordlist');
   };
 
   return (
