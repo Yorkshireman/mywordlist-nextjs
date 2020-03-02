@@ -1,9 +1,13 @@
 ## Description
-The frontend client for MyWordlist, built using NextJS, backed by:
-* Authentication server - currently https://github.com/Yorkshireman/authentication-server, in development,
-* Resources server - currently https://github.com/Yorkshireman/my_wordlist_resources_spike, in development
+The frontend for MyWordlist, built using NextJS, backed by:
+* Authentication server - currently https://github.com/Yorkshireman/authentication-server, in development
+* Resources server - currently https://github.com/Yorkshireman/my_wordlist_resources, in development
 
 ## Running locally
-* Run `authentication-server` locally and set base url in `.env` as `http://localhost:<port>`.  
-* `npm run dev`  
-
+* Create a local `.env` file containing the following Staging endpoints:
+```
+AUTHENTICATION_SERVER_BASE_URL=https://mysterious-tundra-28425.herokuapp.com
+RESOURCES_SERVER_BASE_URL=https://my-wordlist-resources-stage.herokuapp.com
+```
+* Start the local server with `npm run dev`  
+* Navigate to `http://localhost:3000`  
