@@ -1,5 +1,6 @@
 import Error from 'next/error';
 import React, { useEffect, useState } from 'react';
+import { Spinner } from 'reactstrap';
 
 import MyWordlist from '../components/MyWordlist';
 import ResourcesService from '../services/resources-service';
@@ -38,7 +39,21 @@ const MyWordlistContainer = () => {
     fetchWordlist();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <Spinner
+      style={{
+        bottom: '40px',
+        left: '0',
+        height: '6rem',
+        margin: 'auto',
+        position: 'absolute',
+        right: '0',
+        top: '0',
+        width: '6rem',
+      }}
+    />;
+  }
+
   if (error) return <Error statusCode={error.statusCode} title={error.name} />;
   if (wordlistEntriesData) return <MyWordlist wordlistEntriesData={wordlistEntriesData} />;
   return null;
