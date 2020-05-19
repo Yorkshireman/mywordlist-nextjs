@@ -10,11 +10,22 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [addWordModal, setAddWordModal] = useState(false);
   const [description, setDescription] = useState('');
   const [showDescriptions, setShowDescriptions] = useState(true);
-  const [word, setWord] = useState('');
+  const [wordName, setWordName] = useState('');
+  const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
+
+  const prependWordlistEntryToList = () => {
+    setWordlistEntries([
+      {
+        description,
+        word: { name: wordName }
+      },
+      ...wordlistEntries
+    ]);
+  };
 
   const handleChange = ({ target: { checked, name, value } }) => {
-    if (name === 'word') {
-      return setWord(value);
+    if (name === 'wordName') {
+      return setWordName(value);
     }
 
     if (name === 'description') {
@@ -26,10 +37,10 @@ const MyWordlist = ({ wordlistEntriesData }) => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    // add word to top of wordlist immediately
+    prependWordlistEntryToList();
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
-      const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name: word });
+      const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name: wordName });
       const { data: { token: newToken } } = await response.json();
       await setAuthToken(newToken);
     } catch (e) {
@@ -71,8 +82,8 @@ const MyWordlist = ({ wordlistEntriesData }) => {
         <ModalBody>
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label for='word' style={{ marginBottom: '0' }}>Word:</Label>
-              <Input aria-label='word' id='word' minLength='2' maxLength='64' name='word' onChange={handleChange} type='text' />
+              <Label for='wordName' style={{ marginBottom: '0' }}>Word:</Label>
+              <Input aria-label='word' id='name' minLength='2' maxLength='64' name='wordName' onChange={handleChange} type='text' />
             </FormGroup>
             <FormGroup>
               <Label for='description' style={{ marginBottom: '0' }}>Description:</Label>
@@ -82,7 +93,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
           </Form>
         </ModalBody>
       </Modal>
-      {renderWordlistEntries(wordlistEntriesData)}
+      {renderWordlistEntries(wordlistEntries)}
       <AddWordIcon onClick={toggleAddWordModal} />
     </>
   );
