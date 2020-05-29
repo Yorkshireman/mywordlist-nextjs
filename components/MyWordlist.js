@@ -2,16 +2,21 @@ import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } 
 import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
+import { Alert } from 'reactstrap';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 import WordlistEntry from './WordlistEntry';
 
 const MyWordlist = ({ wordlistEntriesData }) => {
   const [addWordModal, setAddWordModal] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
   const [description, setDescription] = useState('');
   const [showDescriptions, setShowDescriptions] = useState(true);
   const [wordName, setWordName] = useState('');
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
+  const [wordlistEntryUploadErrors, setWordlistEntryUploadErrors] = useState([]);
+
+  const onDismiss = () => setAlertVisible(false);
 
   const prependWordlistEntryToList = () => {
     setWordlistEntries([
@@ -41,22 +46,30 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
       const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name: wordName });
+      // clear any uploadError from relevant wordlistEntry
+      // hydrate wordlistEntry
       const { data: { token: newToken } } = await response.json();
       await setAuthToken(newToken);
     } catch (e) {
-      // remove word from wordlist perhaps
       console.log('error: ', e);
+      setAlertVisible(true);
+      setWordlistEntryUploadErrors([
+        { wordName },
+        ...wordlistEntryUploadErrors
+      ]);
     }
   };
 
   const renderWordlistEntries = entries => entries.map((entry, index) => {
     const { description, word: { name } } = entry;
+    const uploadError = Boolean(wordlistEntryUploadErrors.find(({ wordName }) => wordName === name));
     return (
       <WordlistEntry
         description={description}
         key={index}
         name={name}
         showDescriptions={showDescriptions}
+        uploadError={uploadError}
       />
     );
   });
@@ -65,6 +78,9 @@ const MyWordlist = ({ wordlistEntriesData }) => {
 
   return (
     <>
+      <Alert color={'warning'} isOpen={alertVisible} toggle={onDismiss}>
+          Wordlist entry failed to upload. Tap the icon to try again.
+      </Alert>
       <div style={{ marginBottom: '0.5em' }}>
         <FormGroup check>
           <Label check>

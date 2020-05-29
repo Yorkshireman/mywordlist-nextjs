@@ -1,4 +1,4 @@
-const WordlistEntry = ({ description, name, showDescriptions}) => {
+const WordlistEntry = ({ description, name, showDescriptions, uploadError }) => {
   return (
     <>
       <div>
