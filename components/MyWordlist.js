@@ -109,7 +109,9 @@ const MyWordlist = ({ wordlistEntriesData }) => {
           </Form>
         </ModalBody>
       </Modal>
-      {renderWordlistEntries(wordlistEntries)}
+      <ul style={{ listStyle: 'none', padding: '0' }}>
+        {renderWordlistEntries(wordlistEntries)}
+      </ul>
       <AddWordIcon onClick={toggleAddWordModal} />
     </>
   );
