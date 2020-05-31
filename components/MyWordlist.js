@@ -46,7 +46,6 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
       const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name: wordName });
-      // clear any uploadError from relevant wordlistEntry
       // hydrate wordlistEntry
       const { data: { token: newToken } } = await response.json();
       await setAuthToken(newToken);
@@ -68,8 +67,11 @@ const MyWordlist = ({ wordlistEntriesData }) => {
         description={description}
         key={index}
         name={name}
+        setAlertVisible={setAlertVisible}
+        setWordlistEntryUploadErrors={setWordlistEntryUploadErrors}
         showDescriptions={showDescriptions}
         uploadError={uploadError}
+        wordlistEntryUploadErrors={wordlistEntryUploadErrors}
       />
     );
   });

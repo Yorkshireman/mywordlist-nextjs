@@ -21,26 +21,26 @@ class ResourcesService extends AbstractService {
   }
 
   async createWordlistEntry({ description, name, token }) {
-    // const body = JSON.stringify({
-    //   wordlist_entry: {
-    //     word: {
-    //       name
-    //     },
-    //     description
-    //   }
-    // });
+    const body = JSON.stringify({
+      wordlist_entry: {
+        word: {
+          name
+        },
+        description
+      }
+    });
 
-    // return await this.call({
-    //   body,
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`,
-    //     'Content-Type': 'application/vnd.api+json'
-    //   },
-    //   method: 'POST',
-    //   path: '/wordlist_entries'
-    // });
+    return await this.call({
+      body,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/vnd.api+json'
+      },
+      method: 'POST',
+      path: '/wordlist_entries'
+    });
 
-    throw new Error;
+    // throw new Error;
   }
 
   async getWordlist(token) {
