@@ -1,4 +1,4 @@
-const SvgIcon = ({ bottom, height }) => {
+const RefreshIcon = ({ bottom, height }) => {
   return (
     <svg viewBox='0 0 492.883 492.883' style={{ position: 'relative', bottom, height }}>
       <g>
@@ -13,4 +13,4 @@ const SvgIcon = ({ bottom, height }) => {
   );
 };
 
-export default SvgIcon;
+export default RefreshIcon;
