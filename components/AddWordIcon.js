@@ -7,7 +7,7 @@ const AddWordIcon = ({ onClick }) => {
       height: '5em',
       position: 'fixed',
       right: '3em',
-      stroke: 'grey'
+      stroke: '#007bff'
     }} viewBox='0 0 100 100'>
     <circle cx='50' cy='50' r='45' fill='none' strokeWidth='9' strokeOpacity='0.65'></circle>
     <line x1='27.5' y1='50' x2='72.5' y2='50' strokeWidth='9' strokeOpacity='0.65'></line>
