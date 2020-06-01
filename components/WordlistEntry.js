@@ -2,16 +2,29 @@ import RefreshIcon from './RefreshIcon';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 
-const WordlistEntry = ({ description, name, setAlertVisible, setWordlistEntryUploadErrors, showDescriptions, uploadError, wordlistEntryUploadErrors }) => {
+const WordlistEntry = ({
+  description,
+  hydrateWordlistEntry,
+  name,
+  setAlertVisible,
+  setWordlistEntryUploadErrors,
+  showDescriptions,
+  uploadError,
+  wordlistEntryUploadErrors
+}) => {
+  const removeUploadErrorFromWordlistEntry = name => {
+    setWordlistEntryUploadErrors(wordlistEntryUploadErrors.filter(el => el.wordName !== name));
+  };
+
   const reSubmitWordlistEntry = async () => {
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
       setAlertVisible(false);
       const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name });
-      setWordlistEntryUploadErrors(wordlistEntryUploadErrors.filter(el => el.wordName !== name));
-      // hydrate wordlistEntry
-      const { data: { token: newToken } } = await response.json();
-      await setAuthToken(newToken);
+      const body = await response.json();
+      hydrateWordlistEntry(body);
+      removeUploadErrorFromWordlistEntry(name);
+      await setAuthToken(body.data.token);
     } catch (e) {
       setAlertVisible(true);
     }

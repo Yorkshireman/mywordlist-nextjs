@@ -16,8 +16,6 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
   const [wordlistEntryUploadErrors, setWordlistEntryUploadErrors] = useState([]);
 
-  const onDismiss = () => setAlertVisible(false);
-
   const hydrateWordlistEntry = ({
     data: {
       attributes: {
@@ -26,9 +24,9 @@ const MyWordlist = ({ wordlistEntriesData }) => {
           id: wordId,
           name,
           wordlist_ids: wordlistIds
-        },
-        id
-      }
+        }
+      },
+      id
     }
   }) => {
     setWordlistEntries([
@@ -45,6 +43,8 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       ...wordlistEntries.filter(i => i.word.name !== name)
     ]);
   };
+
+  const onDismiss = () => setAlertVisible(false);
 
   const prependWordlistEntryToList = () => {
     setWordlistEntries([
@@ -92,6 +92,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     return (
       <WordlistEntry
         description={description}
+        hydrateWordlistEntry={hydrateWordlistEntry}
         key={index}
         name={name}
         setAlertVisible={setAlertVisible}
