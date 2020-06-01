@@ -18,6 +18,34 @@ const MyWordlist = ({ wordlistEntriesData }) => {
 
   const onDismiss = () => setAlertVisible(false);
 
+  const hydrateWordlistEntry = ({
+    data: {
+      attributes: {
+        created_at: createdAt,
+        word: {
+          id: wordId,
+          name,
+          wordlist_ids: wordlistIds
+        },
+        id
+      }
+    }
+  }) => {
+    setWordlistEntries([
+      {
+        createdAt,
+        description,
+        id,
+        word: {
+          id: wordId,
+          name,
+          wordlistIds
+        }
+      },
+      ...wordlistEntries.filter(i => i.word.name !== name)
+    ]);
+  };
+
   const prependWordlistEntryToList = () => {
     setWordlistEntries([
       {
@@ -46,11 +74,10 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
       const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name: wordName });
-      // hydrate wordlistEntry
-      const { data: { token: newToken } } = await response.json();
-      await setAuthToken(newToken);
+      const body = await response.json();
+      await setAuthToken(body.data.token);
+      hydrateWordlistEntry(body);
     } catch (e) {
-      console.log('error: ', e);
       setAlertVisible(true);
       setWordlistEntryUploadErrors([
         { wordName },

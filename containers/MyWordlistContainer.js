@@ -13,7 +13,25 @@ const MyWordlistContainer = () => {
 
   const buildWordlistEntries = wordlistData => {
     const array = Object.values(wordlistData.data.wordlist_entries);
-    return array.map(({ attributes: { description, word } }) => ({ description, word }));
+    return array.map(({
+      attributes: {
+        created_at: createdAt,
+        description,
+        word: {
+          id,
+          name,
+          wordlist_ids: wordlistIds
+        }
+      }
+    }) => ({
+      createdAt,
+      description,
+      word: {
+        id,
+        name,
+        wordlistIds
+      }
+    }));
   };
 
   const fetchWordlist = async () => {
