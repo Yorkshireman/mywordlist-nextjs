@@ -2,6 +2,7 @@ import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHe
 import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
+import RefreshIcon from './RefreshIcon';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 import WordlistEntry from './WordlistEntry';
@@ -108,7 +109,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   return (
     <>
       <Alert color={'warning'} isOpen={alertVisible} toggle={onDismiss}>
-          Wordlist entry failed to upload. Tap the icon to try again.
+        Wordlist entry failed to upload. Tap the <RefreshIcon bottom='0.05em' height='0.85em' /> icon to try again.
       </Alert>
       <div style={{ marginBottom: '0.5em' }}>
         <FormGroup check>
