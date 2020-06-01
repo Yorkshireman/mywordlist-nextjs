@@ -1,8 +1,7 @@
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
-import { Alert } from 'reactstrap';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 import WordlistEntry from './WordlistEntry';

@@ -1,3 +1,6 @@
+import { Spinner } from 'reactstrap';
+import { useState } from 'react';
+
 import RefreshIcon from './RefreshIcon';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
@@ -12,21 +15,30 @@ const WordlistEntry = ({
   uploadError,
   wordlistEntryUploadErrors
 }) => {
+  const [uploading, setUploading] = useState(false);
+
   const removeUploadErrorFromWordlistEntry = name => {
     setWordlistEntryUploadErrors(wordlistEntryUploadErrors.filter(el => el.wordName !== name));
   };
 
   const reSubmitWordlistEntry = async () => {
+    removeUploadErrorFromWordlistEntry(name);
+    setUploading(true);
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
       setAlertVisible(false);
       const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name });
+      setUploading(false);
       const body = await response.json();
       hydrateWordlistEntry(body);
-      removeUploadErrorFromWordlistEntry(name);
       await setAuthToken(body.data.token);
     } catch (e) {
       setAlertVisible(true);
+      setUploading(false);
+      setWordlistEntryUploadErrors([
+        { wordName: name },
+        ...wordlistEntryUploadErrors
+      ]);
     }
   };
 
@@ -38,10 +50,23 @@ const WordlistEntry = ({
     );
   };
 
+  const renderSpinner = () => {
+    return (
+      <div style={{
+        paddingRight: '0.5em',
+        position: 'relative',
+        bottom: '0.2em'
+      }}>
+        <Spinner color='primary' style={{ height: '0.85em', width: '0.85em' }} />
+      </div>
+    );
+  };
+
   return (
     <>
       <li>
         {uploadError ? renderRefreshIcon() : null}
+        {uploading ? renderSpinner() : null}
         <section style={ uploadError ? { opacity: '50%' } : null }>
           <strong>{name}</strong>
         </section>
