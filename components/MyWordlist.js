@@ -86,14 +86,13 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     }
   };
 
-  const renderWordlistEntries = entries => entries.map((entry, index) => {
-    const { description, word: { name } } = entry;
+  const renderWordlistEntries = entries => entries.map(({ description, id, word: { name } }) => {
     const uploadError = Boolean(wordlistEntryUploadErrors.find(({ wordName }) => wordName === name));
     return (
       <WordlistEntry
         description={description}
         hydrateWordlistEntry={hydrateWordlistEntry}
-        key={index}
+        key={id}
         name={name}
         setAlertVisible={setAlertVisible}
         setWordlistEntryUploadErrors={setWordlistEntryUploadErrors}

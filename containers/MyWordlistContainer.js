@@ -18,16 +18,18 @@ const MyWordlistContainer = () => {
         created_at: createdAt,
         description,
         word: {
-          id,
+          id: wordId,
           name,
           wordlist_ids: wordlistIds
         }
-      }
+      },
+      id
     }) => ({
       createdAt,
       description,
+      id,
       word: {
-        id,
+        id: wordId,
         name,
         wordlistIds
       }
