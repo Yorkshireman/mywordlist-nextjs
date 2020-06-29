@@ -30,7 +30,8 @@
     "next": "^9.2.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "reactstrap": "^8.4.1"
+    "reactstrap": "^8.4.1",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

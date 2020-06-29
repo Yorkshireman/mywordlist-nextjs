@@ -21,12 +21,14 @@ class ResourcesService extends AbstractService {
   }
 
   async createWordlistEntry({ description, name, token }) {
+    const id = createUuuid();
     const body = JSON.stringify({
       wordlist_entry: {
         word: {
           name
         },
-        description
+        description,
+        id
       }
     });
 
@@ -39,8 +41,6 @@ class ResourcesService extends AbstractService {
       method: 'POST',
       path: '/wordlist_entries'
     });
-
-    // throw new Error;
   }
 
   async getWordlist(token) {
