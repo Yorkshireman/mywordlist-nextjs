@@ -8,6 +8,7 @@ import { setAuthToken } from './helpers/setAuthToken';
 const WordlistEntry = ({
   description,
   hydrateWordlistEntry,
+  id,
   name,
   setAlertVisible,
   setWordlistEntryUploadErrors,
@@ -27,7 +28,7 @@ const WordlistEntry = ({
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
       setAlertVisible(false);
-      const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name });
+      const response = await ResourcesService.createWordlistEntry({ description, id, token: currentToken, name });
       setUploading(false);
       const body = await response.json();
       hydrateWordlistEntry(body);

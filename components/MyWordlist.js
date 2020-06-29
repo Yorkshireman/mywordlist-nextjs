@@ -6,6 +6,7 @@ import RefreshIcon from './RefreshIcon';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 import WordlistEntry from './WordlistEntry';
+import { v4 as uuidv4 } from 'uuid';
 
 const MyWordlist = ({ wordlistEntriesData }) => {
   const [addWordModal, setAddWordModal] = useState(false);
@@ -29,6 +30,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       id
     }
   }) => {
+    // change this by finding the actual wordlistEntry and truly hydrating it instead of replacing the entire entry
     setWordlistEntries([
       {
         createdAt,
@@ -47,9 +49,11 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const onDismiss = () => setAlertVisible(false);
 
   const prependWordlistEntryToList = () => {
+    const id = uuidv4();
     setWordlistEntries([
       {
         description,
+        id,
         word: { name: wordName }
       },
       ...wordlistEntries
@@ -93,6 +97,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
         description={description}
         hydrateWordlistEntry={hydrateWordlistEntry}
         key={id}
+        id={id}
         name={name}
         setAlertVisible={setAlertVisible}
         setWordlistEntryUploadErrors={setWordlistEntryUploadErrors}

@@ -1,7 +1,5 @@
 import AbstractService from './abstract-service';
 import getConfig from 'next/config';
-import RemoteServiceError from '../errors/remote-service-error';
-import { v4 as uuidv4 } from 'uuid';
 
 const { publicRuntimeConfig } = getConfig();
 const { RESOURCES_SERVER_BASE_URL } = publicRuntimeConfig;
@@ -22,16 +20,7 @@ class ResourcesService extends AbstractService {
     });
   }
 
-  async createWordlistEntry({ description, name, token }) {
-    let id;
-    try {
-      id = uuidv4();
-    } catch (e) {
-      throw new RemoteServiceError(null, 'error generating uuid');
-    }
-
-    console.log('======= id =======');
-    console.log(id);
+  async createWordlistEntry({ description, id, name, token }) {
     const body = JSON.stringify({
       wordlist_entry: {
         word: {
