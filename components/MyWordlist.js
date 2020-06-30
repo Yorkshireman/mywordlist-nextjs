@@ -22,25 +22,33 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       attributes: {
         created_at: createdAt,
         word: {
-          id: wordId,
+          id,
           wordlist_ids: wordlistIds
         }
       },
-      id
+      id: wordlistEntryId
     }
   }, entries) => {
-    const currentWordlistEntries = entries;
-    const entryIndex = currentWordlistEntries.findIndex(e => e.id === id);
-    currentWordlistEntries[entryIndex].createdAt = createdAt;
-    currentWordlistEntries[entryIndex].word.id = wordId;
-    currentWordlistEntries[entryIndex].word.wordlistIds = wordlistIds;
-    setWordlistEntries(currentWordlistEntries);
+    const entryIndex = entries.findIndex(i => i.id === wordlistEntryId);
+    const entry = entries[entryIndex];
+
+    entries.splice(entryIndex, 1, {
+      ...entry,
+      createdAt,
+      word: {
+        id,
+        wordlistIds,
+        ...entry.word
+      }
+    });
+
+    setWordlistEntries(entries);
   };
 
   const onDismiss = () => setAlertVisible(false);
 
   const prependWordlistEntryToList = id => {
-    const newEntries = [
+    const newList = [
       {
         description,
         id,
@@ -49,8 +57,8 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       ...wordlistEntries
     ];
 
-    setWordlistEntries(newEntries);
-    return newEntries;
+    setWordlistEntries(newList);
+    return newList;
   };
 
   const handleChange = ({ target: { checked, name, value } }) => {
@@ -68,13 +76,13 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const handleSubmit = async event => {
     event.preventDefault();
     const id = uuidv4();
-    const newEntries = prependWordlistEntryToList(id);
+    const newList = prependWordlistEntryToList(id);
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
       const response = await ResourcesService.createWordlistEntry({ description, id, token: currentToken, name: wordName });
       const body = await response.json();
       await setAuthToken(body.data.token);
-      hydrateWordlistEntry(body, newEntries);
+      hydrateWordlistEntry(body, newList);
     } catch (e) {
       setAlertVisible(true);
       setWordlistEntryUploadErrors([
