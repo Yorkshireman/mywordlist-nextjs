@@ -23,41 +23,34 @@ const MyWordlist = ({ wordlistEntriesData }) => {
         created_at: createdAt,
         word: {
           id: wordId,
-          name,
           wordlist_ids: wordlistIds
         }
       },
       id
     }
-  }) => {
-    // change this by finding the actual wordlistEntry and truly hydrating it instead of replacing the entire entry
-    setWordlistEntries([
-      {
-        createdAt,
-        description,
-        id,
-        word: {
-          id: wordId,
-          name,
-          wordlistIds
-        }
-      },
-      ...wordlistEntries.filter(i => i.word.name !== name)
-    ]);
+  }, entries) => {
+    const currentWordlistEntries = entries;
+    const entryIndex = currentWordlistEntries.findIndex(e => e.id === id);
+    currentWordlistEntries[entryIndex].createdAt = createdAt;
+    currentWordlistEntries[entryIndex].word.id = wordId;
+    currentWordlistEntries[entryIndex].word.wordlistIds = wordlistIds;
+    setWordlistEntries(currentWordlistEntries);
   };
 
   const onDismiss = () => setAlertVisible(false);
 
-  const prependWordlistEntryToList = () => {
-    const id = uuidv4();
-    setWordlistEntries([
+  const prependWordlistEntryToList = id => {
+    const newEntries = [
       {
         description,
         id,
         word: { name: wordName }
       },
       ...wordlistEntries
-    ]);
+    ];
+
+    setWordlistEntries(newEntries);
+    return newEntries;
   };
 
   const handleChange = ({ target: { checked, name, value } }) => {
@@ -74,13 +67,14 @@ const MyWordlist = ({ wordlistEntriesData }) => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    prependWordlistEntryToList();
+    const id = uuidv4();
+    const newEntries = prependWordlistEntryToList(id);
     try {
       const currentToken = window.localStorage.getItem('myWordlistAuthToken');
-      const response = await ResourcesService.createWordlistEntry({ description, token: currentToken, name: wordName });
+      const response = await ResourcesService.createWordlistEntry({ description, id, token: currentToken, name: wordName });
       const body = await response.json();
       await setAuthToken(body.data.token);
-      hydrateWordlistEntry(body);
+      hydrateWordlistEntry(body, newEntries);
     } catch (e) {
       setAlertVisible(true);
       setWordlistEntryUploadErrors([
