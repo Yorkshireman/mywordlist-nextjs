@@ -45,14 +45,9 @@ const WordlistEntry = ({
     upload();
   }, [reUploading, uploaded]);
 
-  const reSubmitWordlistEntry = () => {
-    setUploaded(false);
-    setReUploading(true);
-  };
-
   const renderRefreshIcon = () => {
     return (
-      <div onClick={reSubmitWordlistEntry} style={{ paddingRight: '0.5em' }}>
+      <div onClick={() => setReUploading(true)} style={{ paddingRight: '0.5em' }}>
         <RefreshIcon bottom='0.2em' height='0.85em' />
       </div>
     );
