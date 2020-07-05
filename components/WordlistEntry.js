@@ -1,46 +1,53 @@
 import { Spinner } from 'reactstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import RefreshIcon from './RefreshIcon';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 
 const WordlistEntry = ({
+  createdAt,
   description,
-  hydrateWordlistEntry,
   id,
-  name,
   setAlertVisible,
-  setWordlistEntryUploadErrors,
   showDescriptions,
-  uploadError,
-  wordlistEntryUploadErrors
+  wordData: {
+    name
+  }
 }) => {
+  const [reUploading, setReUploading] = useState(false);
+  const [uploaded, setUploaded] = useState(Boolean(createdAt));
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(false);
 
-  const removeUploadErrorFromWordlistEntry = name => {
-    setWordlistEntryUploadErrors(wordlistEntryUploadErrors.filter(el => el.wordName !== name));
-  };
+  useEffect(() => {
+    const upload = async () => {
+      if (!uploaded) {
+        try {
+          const currentToken = window.localStorage.getItem('myWordlistAuthToken');
+          const response = await ResourcesService.createWordlistEntry({ description, id, token: currentToken, name });
+          const body = await response.json();
+          await setAuthToken(body.data.token);
+          setAlertVisible(false);
+          setUploadError(false);
+          setUploaded(true);
+          setUploading(false);
+          setReUploading(false);
+        } catch (e) {
+          setAlertVisible(true);
+          setUploadError(true);
+          setUploading(false);
+          setReUploading(false);
+        }
+      }
+    };
 
-  const reSubmitWordlistEntry = async () => {
-    removeUploadErrorFromWordlistEntry(name);
-    setUploading(true);
-    try {
-      const currentToken = window.localStorage.getItem('myWordlistAuthToken');
-      setAlertVisible(false);
-      const response = await ResourcesService.createWordlistEntry({ description, id, token: currentToken, name });
-      setUploading(false);
-      const body = await response.json();
-      hydrateWordlistEntry(body);
-      await setAuthToken(body.data.token);
-    } catch (e) {
-      setAlertVisible(true);
-      setUploading(false);
-      setWordlistEntryUploadErrors([
-        { wordName: name },
-        ...wordlistEntryUploadErrors
-      ]);
-    }
+    upload();
+  }, [reUploading, uploaded]);
+
+  const reSubmitWordlistEntry = () => {
+    setUploaded(false);
+    setReUploading(true);
   };
 
   const renderRefreshIcon = () => {
@@ -66,8 +73,8 @@ const WordlistEntry = ({
   return (
     <>
       <li>
-        {uploadError ? renderRefreshIcon() : null}
-        {uploading ? renderSpinner() : null}
+        {uploadError && !reUploading ? renderRefreshIcon() : null}
+        {uploading || reUploading ? renderSpinner() : null}
         <section style={ uploadError ? { opacity: '50%' } : null }>
           <strong>{name}</strong>
         </section>

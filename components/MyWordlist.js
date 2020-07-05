@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
 import RefreshIcon from './RefreshIcon';
-import ResourcesService from '../services/resources-service';
-import { setAuthToken } from './helpers/setAuthToken';
 import WordlistEntry from './WordlistEntry';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -15,51 +13,8 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [showDescriptions, setShowDescriptions] = useState(true);
   const [wordName, setWordName] = useState('');
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
-  const [wordlistEntryUploadErrors, setWordlistEntryUploadErrors] = useState([]);
-
-  const hydrateWordlistEntry = ({
-    data: {
-      attributes: {
-        created_at: createdAt,
-        word: {
-          id,
-          wordlist_ids: wordlistIds
-        }
-      },
-      id: wordlistEntryId
-    }
-  }, entries) => {
-    const entryIndex = entries.findIndex(i => i.id === wordlistEntryId);
-    const entry = entries[entryIndex];
-
-    entries.splice(entryIndex, 1, {
-      ...entry,
-      createdAt,
-      word: {
-        id,
-        wordlistIds,
-        ...entry.word
-      }
-    });
-
-    setWordlistEntries(entries);
-  };
 
   const onDismiss = () => setAlertVisible(false);
-
-  const prependWordlistEntryToList = id => {
-    const newList = [
-      {
-        description,
-        id,
-        word: { name: wordName }
-      },
-      ...wordlistEntries
-    ];
-
-    setWordlistEntries(newList);
-    return newList;
-  };
 
   const handleChange = ({ target: { checked, name, value } }) => {
     if (name === 'wordName') {
@@ -75,37 +30,33 @@ const MyWordlist = ({ wordlistEntriesData }) => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    const id = uuidv4();
-    const newList = prependWordlistEntryToList(id);
-    try {
-      const currentToken = window.localStorage.getItem('myWordlistAuthToken');
-      const response = await ResourcesService.createWordlistEntry({ description, id, token: currentToken, name: wordName });
-      const body = await response.json();
-      await setAuthToken(body.data.token);
-      hydrateWordlistEntry(body, newList);
-    } catch (e) {
-      setAlertVisible(true);
-      setWordlistEntryUploadErrors([
-        { wordName },
-        ...wordlistEntryUploadErrors
-      ]);
-    }
+    const newList = [
+      {
+        description,
+        id: uuidv4(),
+        word: { name: wordName }
+      },
+      ...wordlistEntries
+    ];
+
+    setWordlistEntries(newList);
   };
 
-  const renderWordlistEntries = entries => entries.map(({ description, id, word: { name } }) => {
-    const uploadError = Boolean(wordlistEntryUploadErrors.find(({ wordName }) => wordName === name));
+  const renderWordlistEntries = entries => entries.map(({
+    createdAt,
+    description,
+    id,
+    word: wordData
+  }) => {
     return (
       <WordlistEntry
+        createdAt={createdAt}
         description={description}
-        hydrateWordlistEntry={hydrateWordlistEntry}
         key={id}
         id={id}
-        name={name}
         setAlertVisible={setAlertVisible}
-        setWordlistEntryUploadErrors={setWordlistEntryUploadErrors}
         showDescriptions={showDescriptions}
-        uploadError={uploadError}
-        wordlistEntryUploadErrors={wordlistEntryUploadErrors}
+        wordData={wordData}
       />
     );
   });
