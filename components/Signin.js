@@ -40,7 +40,12 @@ const SignIn = () => {
       return setError(e);
     }
 
-    Router.push('/mywordlist');
+    if (Router.query?.successUrl) {
+      const { query: { successUrl } } = Router;
+      return Router.push(successUrl);
+    }
+
+    Router.push('/index');
   };
 
   return (

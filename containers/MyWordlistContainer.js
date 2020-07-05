@@ -1,5 +1,6 @@
 import Error from 'next/error';
 import React, { useEffect, useState } from 'react';
+import Router from 'next/router';
 import { Spinner } from 'reactstrap';
 
 import MyWordlist from '../components/MyWordlist';
@@ -47,6 +48,10 @@ const MyWordlistContainer = () => {
       response = await ResourcesService.getWordlistEntries(newToken);
       response = await response.json();
     } catch (e) {
+      if (e.statusCode === 401) {
+        return Router.push({ pathname: '/signin', query: { successUrl: '/mywordlist' } });
+      }
+
       setLoading(false);
       return setError(e);
     }
