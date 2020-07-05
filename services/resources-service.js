@@ -21,10 +21,6 @@ class ResourcesService extends AbstractService {
   }
 
   async createWordlistEntry({ description, id, name, token }) {
-    if (Math.random() < 0.5) {
-      throw new Error('createWordlistEntry() error');
-    }
-
     const body = JSON.stringify({
       wordlist_entry: {
         word: {
