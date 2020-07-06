@@ -1,5 +1,5 @@
 const Category = ({ name }) => {
- return <li>{name}</li>;
+  return <li>{name}</li>;
 };
 
 export default Category;

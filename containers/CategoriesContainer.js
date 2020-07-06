@@ -1,5 +1,5 @@
 import { Input, Form, FormGroup } from 'reactstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import Category from '../components/Category';
@@ -8,6 +8,13 @@ const CategoriesContainer = ({ categories: _categories }) => {
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
   const [categories, setCategories] = useState(_categories);
   const [newCategoryName, setNewCategoryName] = useState();
+
+  useEffect(() => {
+    if (!showAddCategoriesInput) return;
+
+    const input = document.getElementById('categories-input');
+    input.addEventListener('blur', () => setShowAddCategoriesInput(false));
+  }, [showAddCategoriesInput]);
 
   const handleChange = ({ target: { value: name }}) => setNewCategoryName(name.trim());
   const handleSubmit = e => {
@@ -40,8 +47,9 @@ const CategoriesContainer = ({ categories: _categories }) => {
       <Form id='categories-submission-form' onSubmit={handleSubmit}>
         <FormGroup>
           <Input
-            aria-label='category'
-            id='category'
+            aria-label='categories-input'
+            autoComplete='off'
+            id='categories-input'
             minLength='1'
             maxLength='24'
             name='category'
