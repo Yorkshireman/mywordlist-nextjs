@@ -19,7 +19,7 @@ const CategoriesContainer = ({ categories: _categories }) => {
   const handleChange = ({ target: { value: name }}) => setNewCategoryNames(name.trim());
   const handleSubmit = e => {
     e.preventDefault();
-    const newNames = newCategoryNames.split(',').map(i => i.trim()).filter(i => i.length);
+    const newNames = newCategoryNames.split(',').map(i => i.trim().toLowerCase()).filter(i => i.length);
     if (categories.map(i => i.name).some(name => newNames.includes(name))) return; // need to display some sort of warning message instead of just returning
 
     const newCategories = newNames.map(name => {
