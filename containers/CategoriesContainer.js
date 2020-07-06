@@ -7,7 +7,7 @@ import Category from '../components/Category';
 const CategoriesContainer = ({ categories: _categories }) => {
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
   const [categories, setCategories] = useState(_categories);
-  const [newCategoryName, setNewCategoryName] = useState();
+  const [newCategoryNames, setNewCategoryNames] = useState();
 
   useEffect(() => {
     if (!showAddCategoriesInput) return;
@@ -16,23 +16,22 @@ const CategoriesContainer = ({ categories: _categories }) => {
     input.addEventListener('blur', () => setShowAddCategoriesInput(false));
   }, [showAddCategoriesInput]);
 
-  const handleChange = ({ target: { value: name }}) => setNewCategoryName(name.trim());
+  const handleChange = ({ target: { value: name }}) => setNewCategoryNames(name.trim());
   const handleSubmit = e => {
     e.preventDefault();
-    // need to handle multiple comma-separated categories
-    if (categories.find(({ name }) => name === newCategoryName)) return; // need to display some sort of warning message
-    const id = uuidv4();
-    const newList = [
-      ...categories,
-      {
-        id,
-        name: newCategoryName
-      }
-    ];
+    const newNames = newCategoryNames.split(',').map(i => i.trim()).filter(i => i.length);
+    if (categories.map(i => i.name).some(name => newNames.includes(name))) return; // need to display some sort of warning message instead of just returning
 
-    setCategories(newList);
+    const newCategories = newNames.map(name => {
+      return {
+        id: uuidv4(),
+        name
+      };
+    });
+
+    setCategories(categories.concat(newCategories));
     document.getElementById('categories-submission-form').reset();
-    setNewCategoryName(null);
+    setNewCategoryNames(null);
   };
 
   const toggleAddCategoriesInput = async () => {
