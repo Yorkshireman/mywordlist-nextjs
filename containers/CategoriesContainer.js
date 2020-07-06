@@ -35,7 +35,10 @@ const CategoriesContainer = ({ categories: _categories }) => {
     setNewCategoryName(null);
   };
 
-  const toggleAddCategoriesInput = () => setShowAddCategoriesInput(!showAddCategoriesInput);
+  const toggleAddCategoriesInput = async () => {
+    await setShowAddCategoriesInput(!showAddCategoriesInput);
+    document.getElementById('categories-input').focus();
+  };
 
   return (
     <>
