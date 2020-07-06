@@ -3,7 +3,7 @@ The frontend for MyWordlist, built using NextJS, backed by:
 * Authentication server - currently https://github.com/Yorkshireman/authentication-server, in development
 * Resources server - currently https://github.com/Yorkshireman/my_wordlist_resources, in development
 
-A Staging deployment can be found at https://infinite-fortress-83857.herokuapp.com. Test login `test1@test.com` / `password` can be used.
+A Staging deployment can be found at https://mywordlist-nextjs-stage.herokuapp.com. Test login `test1@test.com` / `password` can be used.
 
 ## Running locally
 * Create a local `.env` file containing the following Staging endpoints:
