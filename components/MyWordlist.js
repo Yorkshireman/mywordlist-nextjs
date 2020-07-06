@@ -10,7 +10,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [addWordModal, setAddWordModal] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [description, setDescription] = useState('');
-  const [showDescriptions, setShowDescriptions] = useState(true);
+  const [showDescriptions, setShowDescriptions] = useState(false);
   const [wordName, setWordName] = useState('');
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
 
@@ -25,7 +25,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       return setDescription(value);
     }
 
-    setShowDescriptions(checked);
+    // setShowDescriptions(checked);
   };
 
   const handleSubmit = async event => {
@@ -43,6 +43,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   };
 
   const renderWordlistEntries = entries => entries.map(({
+    categories,
     createdAt,
     description,
     id,
@@ -50,6 +51,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   }) => {
     return (
       <WordlistEntry
+        categories={categories}
         createdAt={createdAt}
         description={description}
         key={id}

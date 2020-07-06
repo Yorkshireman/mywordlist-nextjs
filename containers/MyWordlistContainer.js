@@ -14,6 +14,10 @@ const MyWordlistContainer = () => {
 
   const buildWordlistEntries = wordlistData => {
     const array = Object.values(wordlistData.data.wordlist_entries);
+
+    // stubbed
+    const categories = [];
+
     return array.map(({
       attributes: {
         created_at: createdAt,
@@ -26,6 +30,7 @@ const MyWordlistContainer = () => {
       },
       id
     }) => ({
+      categories,
       createdAt,
       description,
       id,

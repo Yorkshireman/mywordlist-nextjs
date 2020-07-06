@@ -1,11 +1,13 @@
 import { Spinner } from 'reactstrap';
 import { useState, useEffect } from 'react';
 
+import CategoriesContainer from '../containers/CategoriesContainer';
 import RefreshIcon from './RefreshIcon';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 
 const WordlistEntry = ({
+  categories,
   createdAt,
   description,
   id,
@@ -77,6 +79,9 @@ const WordlistEntry = ({
         <section style={ uploadError ? { opacity: '50%' } : null }>
           {description}
         </section>}
+        <section style={{ padding: '0' }}>
+          <CategoriesContainer categories={categories} />
+        </section>
       </li>
       <style jsx>{`
         li {
