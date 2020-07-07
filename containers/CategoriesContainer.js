@@ -43,8 +43,8 @@ const CategoriesContainer = ({ categories: _categories }) => {
     <>
       <ul style={{ listStyle: 'none', padding: 'none' }}>
         {categories.map(({ id, name }) => <Category key={id} name={name} />)}
+        <li className='add-categories' onClick={toggleAddCategoriesInput}>add +</li>
       </ul>
-      <button onClick={toggleAddCategoriesInput}>add +</button>
       {showAddCategoriesInput &&
       <Form id='categories-submission-form' onSubmit={handleSubmit}>
         <FormGroup>
@@ -61,6 +61,21 @@ const CategoriesContainer = ({ categories: _categories }) => {
           />
         </FormGroup>
       </Form>}
+      <style jsx>{`
+        .add-categories {
+          background-color: #505763;
+          border: none;
+          color: white;
+          font-size: 0.8em;
+          padding: 0.35em 0.9em;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 16px;
+        }
+      `}</style>
     </>
   );
 };

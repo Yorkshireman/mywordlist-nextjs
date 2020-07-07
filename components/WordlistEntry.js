@@ -90,7 +90,7 @@ const WordlistEntry = ({
         }
 
         section {
-          font-size: 0.85em;
+          font-size: 1em;
           padding-right: 1em;
         }
       `}</style>
