@@ -9,6 +9,23 @@ class ResourcesService extends AbstractService {
     super(baseUrl);
   }
 
+  async addCategories({ categories, token, wordlistEntryId }) {
+    const body = JSON.stringify({
+      categories,
+      token
+    });
+
+    return await this.call({
+      body,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/vnd.api+json'
+      },
+      method: 'POST',
+      path: `/wordlist_entries/${wordlistEntryId}/categories`
+    });
+  }
+
   async createWordlist(token) {
     return await this.call({
       headers: {

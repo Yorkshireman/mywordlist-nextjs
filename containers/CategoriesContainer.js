@@ -2,9 +2,10 @@ import { Input, Form, FormGroup } from 'reactstrap';
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import ResourcesService from '../services/resources-service';
 import Category from '../components/Category';
 
-const CategoriesContainer = ({ categories: _categories }) => {
+const CategoriesContainer = ({ categories: _categories, wordlistEntryId }) => {
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
   const [categories, setCategories] = useState(_categories);
   const [newCategoryNames, setNewCategoryNames] = useState();
@@ -17,7 +18,7 @@ const CategoriesContainer = ({ categories: _categories }) => {
   }, [showAddCategoriesInput]);
 
   const handleChange = ({ target: { value: name }}) => setNewCategoryNames(name.trim());
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newNames = newCategoryNames.split(',').map(i => i.trim().toLowerCase()).filter(i => i.length);
     if (categories.map(i => i.name).some(name => newNames.includes(name))) return; // need to display some sort of warning message instead of just returning
@@ -32,6 +33,8 @@ const CategoriesContainer = ({ categories: _categories }) => {
     setCategories(categories.concat(newCategories));
     document.getElementById('categories-submission-form').reset();
     setNewCategoryNames(null);
+    const currentToken = window.localStorage.getItem('myWordlistAuthToken');
+    await ResourcesService.addCategories({ categories: newCategories, token: currentToken, wordlistEntryId });
   };
 
   const toggleAddCategoriesInput = async () => {
