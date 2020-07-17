@@ -17,7 +17,7 @@ const MyWordlistContainer = () => {
 
     return array.map(({
       attributes: {
-        categories: _categories,
+        categories,
         created_at: createdAt,
         description,
         word: {
@@ -28,7 +28,7 @@ const MyWordlistContainer = () => {
       },
       id
     }) => ({
-      categories: JSON.parse(_categories),
+      categories,
       createdAt,
       description,
       id,
