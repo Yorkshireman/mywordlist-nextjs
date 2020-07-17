@@ -15,11 +15,9 @@ const MyWordlistContainer = () => {
   const buildWordlistEntries = wordlistData => {
     const array = Object.values(wordlistData.data.wordlist_entries);
 
-    // stubbed
-    const categories = [];
-
     return array.map(({
       attributes: {
+        categories: _categories,
         created_at: createdAt,
         description,
         word: {
@@ -30,7 +28,7 @@ const MyWordlistContainer = () => {
       },
       id
     }) => ({
-      categories,
+      categories: JSON.parse(_categories),
       createdAt,
       description,
       id,
