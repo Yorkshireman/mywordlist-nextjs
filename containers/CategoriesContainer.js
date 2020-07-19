@@ -15,6 +15,9 @@ const CategoriesContainer = ({ categories: _categories, wordlistEntryId }) => {
 
     const input = document.getElementById('categories-input');
     input.addEventListener('blur', () => setShowAddCategoriesInput(false));
+    input.addEventListener('keydown', ({ key }) => {
+      if (key === 'Escape') setShowAddCategoriesInput(false);
+    });
   }, [showAddCategoriesInput]);
 
   const handleChange = ({ target: { value: name }}) => setNewCategoryNames(name.trim());
