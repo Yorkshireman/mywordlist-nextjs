@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
 import RefreshIcon from './RefreshIcon';
+import ViewConfigInterface from './ViewConfigInterface';
 import WordlistEntry from './WordlistEntry';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -69,22 +70,13 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   });
 
   const toggleAddWordModal = () => setAddWordModal(!addWordModal);
-  // ViewConfigInterface
+  const viewConfigInterfaceProps = { rSelected, rSelectedValues, setRSelected };
   return (
     <>
       <Alert color={'warning'} isOpen={alertVisible} toggle={onDismiss}>
         Wordlist entry failed to upload. Tap the <RefreshIcon bottom='0.05em' height='0.85em' /> icon to try again.
       </Alert>
-      <div style={{ marginBottom: '0.5em' }}>
-        <label>
-          <input type='radio' checked={rSelected === DESCRIPTIONS} onChange={() => setRSelected(DESCRIPTIONS)} />
-          Descriptions
-        </label>
-        <label>
-          <input type='radio' checked={rSelected === CATEGORIES} onChange={() => setRSelected(CATEGORIES)} />
-          Categories
-        </label>
-      </div>
+      <ViewConfigInterface {...viewConfigInterfaceProps} />
       <Modal isOpen={addWordModal} toggle={toggleAddWordModal}>
         <ModalHeader toggle={toggleAddWordModal}>New Word</ModalHeader>
         <ModalBody>
