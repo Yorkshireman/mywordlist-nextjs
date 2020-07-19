@@ -23,6 +23,7 @@ const CategoriesContainer = ({ categories: _categories, wordlistEntryId }) => {
     const newNames = newCategoryNames.split(',').map(i => i.trim().toLowerCase()).filter(i => i.length);
     if (categories.map(i => i.name).some(name => newNames.includes(name))) return; // need to display some sort of warning message instead of just returning
 
+    setShowAddCategoriesInput(false);
     const newCategories = newNames.map(name => {
       return {
         id: uuidv4(),
@@ -50,7 +51,7 @@ const CategoriesContainer = ({ categories: _categories, wordlistEntryId }) => {
       </ul>
       {showAddCategoriesInput &&
       <Form id='categories-submission-form' onSubmit={handleSubmit}>
-        <FormGroup>
+        <FormGroup style={{ marginBottom: '0' }}>
           <Input
             aria-label='categories-input'
             autoComplete='off'
