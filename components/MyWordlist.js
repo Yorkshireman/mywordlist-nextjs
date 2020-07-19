@@ -6,17 +6,23 @@ import RefreshIcon from './RefreshIcon';
 import WordlistEntry from './WordlistEntry';
 import { v4 as uuidv4 } from 'uuid';
 
+const rSelectedValues = {
+  CATEGORIES: 'CATEGORIES',
+  DESCRIPTIONS: 'DESCRIPTIONS'
+};
+
 const MyWordlist = ({ wordlistEntriesData }) => {
+  const { CATEGORIES, DESCRIPTIONS } = rSelectedValues;
   const [addWordModal, setAddWordModal] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [description, setDescription] = useState('');
-  const [showDescriptions, setShowDescriptions] = useState(false);
+  const [rSelected, setRSelected] = useState(CATEGORIES);
   const [wordName, setWordName] = useState('');
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
 
   const onDismiss = () => setAlertVisible(false);
 
-  const handleChange = ({ target: { checked, name, value } }) => {
+  const handleChange = ({ target: { name, value } }) => {
     if (name === 'wordName') {
       return setWordName(value);
     }
@@ -24,8 +30,6 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     if (name === 'description') {
       return setDescription(value);
     }
-
-    // setShowDescriptions(checked);
   };
 
   const handleSubmit = async event => {
@@ -57,30 +61,29 @@ const MyWordlist = ({ wordlistEntriesData }) => {
         key={id}
         id={id}
         setAlertVisible={setAlertVisible}
-        showDescriptions={showDescriptions}
+        showCategories={rSelected === CATEGORIES}
+        showDescriptions={rSelected === DESCRIPTIONS}
         wordData={wordData}
       />
     );
   });
 
   const toggleAddWordModal = () => setAddWordModal(!addWordModal);
-
+  // ViewConfigInterface
   return (
     <>
       <Alert color={'warning'} isOpen={alertVisible} toggle={onDismiss}>
         Wordlist entry failed to upload. Tap the <RefreshIcon bottom='0.05em' height='0.85em' /> icon to try again.
       </Alert>
       <div style={{ marginBottom: '0.5em' }}>
-        <FormGroup check>
-          <Label check>
-            <Input
-              defaultChecked={showDescriptions}
-              onChange={handleChange}
-              type='checkbox'
-            />
-            Descriptions
-          </Label>
-        </FormGroup>
+        <label>
+          <input type='radio' checked={rSelected === DESCRIPTIONS} onChange={() => setRSelected(DESCRIPTIONS)} />
+          Descriptions
+        </label>
+        <label>
+          <input type='radio' checked={rSelected === CATEGORIES} onChange={() => setRSelected(CATEGORIES)} />
+          Categories
+        </label>
       </div>
       <Modal isOpen={addWordModal} toggle={toggleAddWordModal}>
         <ModalHeader toggle={toggleAddWordModal}>New Word</ModalHeader>

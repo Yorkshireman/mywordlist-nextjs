@@ -12,6 +12,7 @@ const WordlistEntry = ({
   description,
   id,
   setAlertVisible,
+  showCategories,
   showDescriptions,
   wordData: {
     name
@@ -79,9 +80,10 @@ const WordlistEntry = ({
         <section style={ uploadError ? { opacity: '50%' } : null }>
           {description}
         </section>}
+        {showCategories &&
         <section style={{ padding: '0' }}>
           <CategoriesContainer categories={categories} wordlistEntryId={id} />
-        </section>
+        </section>}
       </li>
       <style jsx>{`
         li {
