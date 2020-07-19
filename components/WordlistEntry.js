@@ -80,7 +80,7 @@ const WordlistEntry = ({
           {description}
         </section>}
         <section style={{ padding: '0' }}>
-          <CategoriesContainer categories={categories || []} wordlistEntryId={id} />
+          <CategoriesContainer categories={categories} wordlistEntryId={id} />
         </section>
       </li>
       <style jsx>{`
