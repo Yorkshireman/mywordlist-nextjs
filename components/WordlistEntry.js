@@ -7,7 +7,7 @@ import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 
 const WordlistEntry = ({
-  categories,
+  categories: initialCategories,
   createdAt,
   description,
   id,
@@ -19,6 +19,7 @@ const WordlistEntry = ({
     name
   }
 }) => {
+  const [categories, setCategories] = useState(initialCategories);
   const [reUploading, setReUploading] = useState(false);
   const [uploaded, setUploaded] = useState(Boolean(createdAt));
   const [uploading, setUploading] = useState(false);
@@ -69,7 +70,7 @@ const WordlistEntry = ({
     );
   };
 
-  const categoriesContainerProps = { setShowAddWordIcon, categories, wordlistEntryId: id };
+  const categoriesContainerProps = { setShowAddWordIcon, categories, setCategories, wordlistEntryId: id };
   return (
     <>
       <li>

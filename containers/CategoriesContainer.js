@@ -5,9 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import ResourcesService from '../services/resources-service';
 import Category from '../components/Category';
 
-const CategoriesContainer = ({ categories: _categories, setShowAddWordIcon, wordlistEntryId }) => {
+const CategoriesContainer = ({ categories, setCategories, setShowAddWordIcon, wordlistEntryId }) => {
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
-  const [categories, setCategories] = useState(_categories);
   const [newCategoryNames, setNewCategoryNames] = useState();
 
   useEffect(() => {
