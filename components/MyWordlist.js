@@ -18,6 +18,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [alertVisible, setAlertVisible] = useState(false);
   const [description, setDescription] = useState('');
   const [rSelected, setRSelected] = useState(CATEGORIES);
+  const [showAddWordIcon, setShowAddWordIcon] = useState(true);
   const [wordName, setWordName] = useState('');
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
 
@@ -62,6 +63,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
         key={id}
         id={id}
         setAlertVisible={setAlertVisible}
+        setShowAddWordIcon={setShowAddWordIcon}
         showCategories={rSelected === CATEGORIES}
         showDescriptions={rSelected === DESCRIPTIONS}
         wordData={wordData}
@@ -96,7 +98,8 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       <ul style={{ listStyle: 'none', padding: '0' }}>
         {renderWordlistEntries(wordlistEntries)}
       </ul>
-      <AddWordIcon onClick={toggleAddWordModal} />
+      {showAddWordIcon &&
+      <AddWordIcon onClick={toggleAddWordModal} />}
     </>
   );
 };

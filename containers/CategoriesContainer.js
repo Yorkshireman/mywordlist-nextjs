@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ResourcesService from '../services/resources-service';
 import Category from '../components/Category';
 
-const CategoriesContainer = ({ categories: _categories, wordlistEntryId }) => {
+const CategoriesContainer = ({ categories: _categories, setShowAddWordIcon, wordlistEntryId }) => {
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
   const [categories, setCategories] = useState(_categories);
   const [newCategoryNames, setNewCategoryNames] = useState();
@@ -14,9 +14,17 @@ const CategoriesContainer = ({ categories: _categories, wordlistEntryId }) => {
     if (!showAddCategoriesInput) return;
 
     const input = document.getElementById('categories-input');
-    input.addEventListener('blur', () => setShowAddCategoriesInput(false));
+
+    input.addEventListener('blur', () => {
+      setShowAddCategoriesInput(false);
+      setShowAddWordIcon(true);
+    });
+
     input.addEventListener('keydown', ({ key }) => {
-      if (key === 'Escape') setShowAddCategoriesInput(false);
+      if (key !== 'Escape') return;
+
+      setShowAddCategoriesInput(false);
+      setShowAddWordIcon(true);
     });
   }, [showAddCategoriesInput]);
 
@@ -43,6 +51,7 @@ const CategoriesContainer = ({ categories: _categories, wordlistEntryId }) => {
 
   const toggleAddCategoriesInput = async () => {
     await setShowAddCategoriesInput(!showAddCategoriesInput);
+    setShowAddWordIcon(false);
     document.getElementById('categories-input').focus();
   };
 

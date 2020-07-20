@@ -1,5 +1,6 @@
 import AbstractService from './abstract-service';
 import getConfig from 'next/config';
+import ValidationError from '../errors/validation-error';
 
 const { publicRuntimeConfig } = getConfig();
 const { RESOURCES_SERVER_BASE_URL } = publicRuntimeConfig;
@@ -10,6 +11,7 @@ class ResourcesService extends AbstractService {
   }
 
   async addCategories({ categories, token, wordlistEntryId }) {
+    if (!wordlistEntryId) throw new ValidationError('wordlistEntryId undefined');
     const body = JSON.stringify({
       categories,
       token

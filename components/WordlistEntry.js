@@ -12,6 +12,7 @@ const WordlistEntry = ({
   description,
   id,
   setAlertVisible,
+  setShowAddWordIcon,
   showCategories,
   showDescriptions,
   wordData: {
@@ -68,6 +69,7 @@ const WordlistEntry = ({
     );
   };
 
+  const categoriesContainerProps = { setShowAddWordIcon, categories, wordlistEntryId: id };
   return (
     <>
       <li>
@@ -82,7 +84,7 @@ const WordlistEntry = ({
         </section>}
         {showCategories &&
         <section style={{ padding: '0' }}>
-          <CategoriesContainer categories={categories} wordlistEntryId={id} />
+          <CategoriesContainer {...categoriesContainerProps} />
         </section>}
       </li>
       <style jsx>{`
