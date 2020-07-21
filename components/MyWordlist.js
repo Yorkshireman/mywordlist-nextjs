@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
 import RefreshIcon from './RefreshIcon';
+import ValidationError from '../errors/validation-error';
 import ViewConfigInterface from './ViewConfigInterface';
 import WordlistEntry from './WordlistEntry';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,6 +11,16 @@ import { v4 as uuidv4 } from 'uuid';
 const rSelectedValues = {
   CATEGORIES: 'CATEGORIES',
   DESCRIPTIONS: 'DESCRIPTIONS'
+};
+
+const wordlistEntry = ({ description, wordName }) => {
+  if (!wordName) throw new ValidationError('null wordName');
+  return {
+    categories: [],
+    description,
+    id: uuidv4(),
+    word: { name: wordName }
+  };
 };
 
 const MyWordlist = ({ wordlistEntriesData }) => {
@@ -21,8 +32,6 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [showAddWordIcon, setShowAddWordIcon] = useState(true);
   const [wordName, setWordName] = useState('');
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
-
-  const onDismiss = () => setAlertVisible(false);
 
   const handleChange = ({ target: { name, value } }) => {
     if (name === 'wordName') {
@@ -36,17 +45,10 @@ const MyWordlist = ({ wordlistEntriesData }) => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    const newList = [
-      {
-        description,
-        id: uuidv4(),
-        word: { name: wordName }
-      },
-      ...wordlistEntries
-    ];
-
-    setWordlistEntries(newList);
+    setWordlistEntries([ wordlistEntry({ description, wordName }), ...wordlistEntries ]);
   };
+
+  const onDismiss = () => setAlertVisible(false);
 
   const renderWordlistEntries = entries => entries.map(({
     categories,
