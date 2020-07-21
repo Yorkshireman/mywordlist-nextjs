@@ -14,7 +14,8 @@ const rSelectedValues = {
 };
 
 const wordlistEntry = ({ description, wordName }) => {
-  if (!wordName) throw new ValidationError('null wordName');
+  if (!wordName) throw new ValidationError('wordName cannot be empty');
+
   return {
     categories: [],
     description,
