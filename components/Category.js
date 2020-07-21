@@ -1,4 +1,8 @@
+import ValidationError from '../errors/validation-error';
+
 const Category = ({ name }) => {
+  if (!name) throw new ValidationError('name cannot be empty');
+
   return (
     <>
       <li className='category'>{name}</li>
