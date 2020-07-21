@@ -4,8 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import ResourcesService from '../services/resources-service';
 import Category from '../components/Category';
+import ValidationError from '../errors/validation-error';
 
 const CategoriesContainer = ({ categories, setCategories, setShowAddWordIcon, wordlistEntryId }) => {
+  if (!categories) throw new ValidationError('categories should be an Array');
+
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
   const [newCategoryNames, setNewCategoryNames] = useState();
 
