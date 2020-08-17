@@ -34,10 +34,12 @@ const CategoriesContainer = ({ categories, setCategories, setShowAddWordIcon, wo
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newNames = newCategoryNames.split(',').map(i => i.trim().toLowerCase()).filter(i => i.length);
-    if (categories.map(i => i.name).some(name => newNames.includes(name))) return; // need to display some sort of warning message instead of just returning
+    const newUniqueNames = newNames.filter(name => !categories.map(cat => cat.name).includes(name));
 
     setShowAddCategoriesInput(false);
-    const newCategories = newNames.map(name => {
+    if (!newUniqueNames.length) return;
+
+    const newCategories = newUniqueNames.map(name => {
       return {
         id: uuidv4(),
         name
