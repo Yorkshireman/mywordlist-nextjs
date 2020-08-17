@@ -1,20 +1,25 @@
 import { Spinner } from 'reactstrap';
 import { useState, useEffect } from 'react';
 
+import CategoriesContainer from '../containers/CategoriesContainer';
 import RefreshIcon from './RefreshIcon';
 import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 
 const WordlistEntry = ({
+  categories: initialCategories,
   createdAt,
   description,
   id,
   setAlertVisible,
+  setShowAddWordIcon,
+  showCategories,
   showDescriptions,
   wordData: {
     name
   }
 }) => {
+  const [categories, setCategories] = useState(initialCategories);
   const [reUploading, setReUploading] = useState(false);
   const [uploaded, setUploaded] = useState(Boolean(createdAt));
   const [uploading, setUploading] = useState(false);
@@ -65,6 +70,7 @@ const WordlistEntry = ({
     );
   };
 
+  const categoriesContainerProps = { setShowAddWordIcon, categories, setCategories, wordlistEntryId: id };
   return (
     <>
       <li>
@@ -77,6 +83,10 @@ const WordlistEntry = ({
         <section style={ uploadError ? { opacity: '50%' } : null }>
           {description}
         </section>}
+        {showCategories &&
+        <section style={{ padding: '0' }}>
+          <CategoriesContainer {...categoriesContainerProps} />
+        </section>}
       </li>
       <style jsx>{`
         li {
@@ -85,7 +95,7 @@ const WordlistEntry = ({
         }
 
         section {
-          font-size: 0.85em;
+          font-size: 1em;
           padding-right: 1em;
         }
       `}</style>

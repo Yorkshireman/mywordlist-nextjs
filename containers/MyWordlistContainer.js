@@ -14,8 +14,10 @@ const MyWordlistContainer = () => {
 
   const buildWordlistEntries = wordlistData => {
     const array = Object.values(wordlistData.data.wordlist_entries);
+
     return array.map(({
       attributes: {
+        categories,
         created_at: createdAt,
         description,
         word: {
@@ -26,6 +28,7 @@ const MyWordlistContainer = () => {
       },
       id
     }) => ({
+      categories,
       createdAt,
       description,
       id,

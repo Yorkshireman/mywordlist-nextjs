@@ -3,20 +3,38 @@ import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
 import RefreshIcon from './RefreshIcon';
+import ValidationError from '../errors/validation-error';
+import ViewConfigInterface from './ViewConfigInterface';
 import WordlistEntry from './WordlistEntry';
 import { v4 as uuidv4 } from 'uuid';
 
+const rSelectedValues = {
+  CATEGORIES: 'CATEGORIES',
+  DESCRIPTIONS: 'DESCRIPTIONS'
+};
+
+const wordlistEntry = ({ description, wordName }) => {
+  if (!wordName) throw new ValidationError('wordName cannot be empty');
+
+  return {
+    categories: [],
+    description,
+    id: uuidv4(),
+    word: { name: wordName }
+  };
+};
+
 const MyWordlist = ({ wordlistEntriesData }) => {
+  const { CATEGORIES, DESCRIPTIONS } = rSelectedValues;
   const [addWordModal, setAddWordModal] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [description, setDescription] = useState('');
-  const [showDescriptions, setShowDescriptions] = useState(true);
+  const [rSelected, setRSelected] = useState(CATEGORIES);
+  const [showAddWordIcon, setShowAddWordIcon] = useState(true);
   const [wordName, setWordName] = useState('');
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
 
-  const onDismiss = () => setAlertVisible(false);
-
-  const handleChange = ({ target: { checked, name, value } }) => {
+  const handleChange = ({ target: { name, value } }) => {
     if (name === 'wordName') {
       return setWordName(value);
     }
@@ -24,25 +42,17 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     if (name === 'description') {
       return setDescription(value);
     }
-
-    setShowDescriptions(checked);
   };
 
   const handleSubmit = async event => {
     event.preventDefault();
-    const newList = [
-      {
-        description,
-        id: uuidv4(),
-        word: { name: wordName }
-      },
-      ...wordlistEntries
-    ];
-
-    setWordlistEntries(newList);
+    setWordlistEntries([ wordlistEntry({ description, wordName }), ...wordlistEntries ]);
   };
 
+  const onDismiss = () => setAlertVisible(false);
+
   const renderWordlistEntries = entries => entries.map(({
+    categories,
     createdAt,
     description,
     id,
@@ -50,36 +60,28 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   }) => {
     return (
       <WordlistEntry
+        categories={categories}
         createdAt={createdAt}
         description={description}
         key={id}
         id={id}
         setAlertVisible={setAlertVisible}
-        showDescriptions={showDescriptions}
+        setShowAddWordIcon={setShowAddWordIcon}
+        showCategories={rSelected === CATEGORIES}
+        showDescriptions={rSelected === DESCRIPTIONS}
         wordData={wordData}
       />
     );
   });
 
   const toggleAddWordModal = () => setAddWordModal(!addWordModal);
-
+  const viewConfigInterfaceProps = { rSelected, rSelectedValues, setRSelected };
   return (
     <>
       <Alert color={'warning'} isOpen={alertVisible} toggle={onDismiss}>
         Wordlist entry failed to upload. Tap the <RefreshIcon bottom='0.05em' height='0.85em' /> icon to try again.
       </Alert>
-      <div style={{ marginBottom: '0.5em' }}>
-        <FormGroup check>
-          <Label check>
-            <Input
-              defaultChecked={showDescriptions}
-              onChange={handleChange}
-              type='checkbox'
-            />
-            Descriptions
-          </Label>
-        </FormGroup>
-      </div>
+      <ViewConfigInterface {...viewConfigInterfaceProps} />
       <Modal isOpen={addWordModal} toggle={toggleAddWordModal}>
         <ModalHeader toggle={toggleAddWordModal}>New Word</ModalHeader>
         <ModalBody>
@@ -99,7 +101,8 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       <ul style={{ listStyle: 'none', padding: '0' }}>
         {renderWordlistEntries(wordlistEntries)}
       </ul>
-      <AddWordIcon onClick={toggleAddWordModal} />
+      {showAddWordIcon &&
+      <AddWordIcon onClick={toggleAddWordModal} />}
     </>
   );
 };
