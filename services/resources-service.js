@@ -11,7 +11,9 @@ class ResourcesService extends AbstractService {
   }
 
   async addCategories({ categories, token, wordlistEntryId }) {
+    if (!categories || !categories.length) throw new ValidationError('no categories provided');
     if (!wordlistEntryId) throw new ValidationError('wordlistEntryId undefined');
+
     const body = JSON.stringify({
       categories,
       token
