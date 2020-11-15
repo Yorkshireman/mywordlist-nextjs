@@ -22,10 +22,9 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [showAddWordIcon, setShowAddWordIcon] = useState(true);
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
 
-  const addToAllowedCategories = e => {
-    e.preventDefault();
-    const id = e.target.getAttribute('id');
-    const name = e.target.textContent;
+  const addToAllowedCategories = ({ target }) => {
+    const id = target.getAttribute('id');
+    const name = target.textContent;
 
     if (allowedCategories.find(cat => cat.id === id || cat.name === name)) {
       return;
