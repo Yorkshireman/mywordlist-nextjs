@@ -17,13 +17,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const { CATEGORIES, DESCRIPTIONS } = rSelectedValues;
   const [addWordModalIsOpen, setAddWordModalIsOpen] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
-  const [allowedCategories, setAllowedCategories] = useState([
-    { id: '1', name:'noun' },
-    { id: '2', name: 'sport' },
-    { id: '3', name: 'foo' },
-    { id: '4', name: 'bar' },
-    { id: '5', name: 'home' }
-  ]);
+  const [allowedCategories, setAllowedCategories] = useState([]);
   const [rSelected, setRSelected] = useState(CATEGORIES);
   const [showAddWordIcon, setShowAddWordIcon] = useState(true);
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
