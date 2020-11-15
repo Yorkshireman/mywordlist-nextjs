@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
 import AddWordModal from './AddWordModal';
+import AllowedCategoriesContainer from './AllowedCategoriesContainer';
 import RefreshIcon from './RefreshIcon';
 import ViewConfigInterface from './ViewConfigInterface';
 import WordlistEntry from './WordlistEntry';
@@ -16,6 +17,13 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const { CATEGORIES, DESCRIPTIONS } = rSelectedValues;
   const [addWordModalIsOpen, setAddWordModalIsOpen] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
+  const [allowedCategories, setAllowedCategories] = useState([
+    { id: '1', name:'noun' },
+    { id: '2', name: 'sport' },
+    { id: '3', name: 'foo' },
+    { id: '4', name: 'bar' },
+    { id: '5', name: 'home' }
+  ]);
   const [rSelected, setRSelected] = useState(CATEGORIES);
   const [showAddWordIcon, setShowAddWordIcon] = useState(true);
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
@@ -59,7 +67,10 @@ const MyWordlist = ({ wordlistEntriesData }) => {
       <Alert color={'warning'} isOpen={alertVisible} toggle={() => setAlertVisible(false)}>
         Wordlist entry failed to upload. Tap the <RefreshIcon bottom='0.05em' height='0.85em' /> icon to try again.
       </Alert>
-      <ViewConfigInterface {...viewConfigInterfaceProps} />
+      <div style={{ display: 'flex' }}>
+        <AllowedCategoriesContainer allowedCategories={allowedCategories} />
+        <ViewConfigInterface {...viewConfigInterfaceProps} />
+      </div>
       <AddWordModal {...addWordModalProps} />
       <ul style={{ listStyle: 'none', padding: '0' }}>
         {renderWordlistEntries(wordlistEntries)}
