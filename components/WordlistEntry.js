@@ -7,6 +7,7 @@ import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 
 const WordlistEntry = ({
+  addToAllowedCategories,
   categories: initialCategories,
   createdAt,
   description,
@@ -70,7 +71,7 @@ const WordlistEntry = ({
     );
   };
 
-  const categoriesContainerProps = { setShowAddWordIcon, categories, setCategories, wordlistEntryId: id };
+  const categoriesContainerProps = { addToAllowedCategories, setShowAddWordIcon, categories, setCategories, wordlistEntryId: id };
   return (
     <>
       <li>

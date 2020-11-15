@@ -6,7 +6,7 @@ import ResourcesService from '../services/resources-service';
 import Category from '../components/Category';
 import ValidationError from '../errors/validation-error';
 
-const CategoriesContainer = ({ categories, setCategories, setShowAddWordIcon, wordlistEntryId }) => {
+const CategoriesContainer = ({ addToAllowedCategories, categories, setCategories, setShowAddWordIcon, wordlistEntryId }) => {
   if (!categories) throw new ValidationError('categories should be an Array');
 
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
@@ -62,7 +62,7 @@ const CategoriesContainer = ({ categories, setCategories, setShowAddWordIcon, wo
   return (
     <>
       <ul style={{ listStyle: 'none', padding: 'none' }}>
-        {categories.map(({ id, name }) => <Category key={id} name={name} />)}
+        {categories.map(({ id, name }) => <Category addToAllowedCategories={addToAllowedCategories} key={id} id={id} name={name} />)}
         <li className='add-categories' onClick={toggleAddCategoriesInput}>add +</li>
       </ul>
       {showAddCategoriesInput &&

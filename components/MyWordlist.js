@@ -22,6 +22,21 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   const [showAddWordIcon, setShowAddWordIcon] = useState(true);
   const [wordlistEntries, setWordlistEntries] = useState(wordlistEntriesData);
 
+  const addToAllowedCategories = e => {
+    e.preventDefault();
+    const id = e.target.getAttribute('id');
+    const name = e.target.textContent;
+
+    if (allowedCategories.find(cat => cat.id === id || cat.name === name)) {
+      return;
+    }
+
+    setAllowedCategories([
+      ...allowedCategories,
+      { id, name }
+    ]);
+  };
+
   const renderWordlistEntries = entries => entries.map(({
     categories,
     createdAt,
@@ -31,6 +46,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   }) => {
     return (
       <WordlistEntry
+        addToAllowedCategories={addToAllowedCategories}
         categories={categories}
         createdAt={createdAt}
         description={description}
