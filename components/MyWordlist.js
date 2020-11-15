@@ -26,7 +26,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     const id = target.getAttribute('id');
     const name = target.textContent;
 
-    if (allowedCategories.find(cat => cat.id === id || cat.name === name)) return;
+    if (allowedCategories.find(cat => cat.id === id)) return;
 
     setAllowedCategories([
       ...allowedCategories,
@@ -34,29 +34,36 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     ]);
   };
 
-  const renderWordlistEntries = entries => entries.map(({
-    categories,
-    createdAt,
-    description,
-    id,
-    word: wordData
-  }) => {
-    return (
-      <WordlistEntry
-        addToAllowedCategories={addToAllowedCategories}
-        categories={categories}
-        createdAt={createdAt}
-        description={description}
-        key={id}
-        id={id}
-        setAlertVisible={setAlertVisible}
-        setShowAddWordIcon={setShowAddWordIcon}
-        showCategories={rSelected === CATEGORIES}
-        showDescriptions={rSelected === DESCRIPTIONS}
-        wordData={wordData}
-      />
-    );
-  });
+  const renderWordlistEntries = entries => {
+    const filteredEntries = entries.filter(({ categories }) => {
+      if (!allowedCategories.length) return true;
+      return allowedCategories.some(({ id }) => categories.find(category => category.id === id));
+    });
+
+    return filteredEntries.map(({
+      categories,
+      createdAt,
+      description,
+      id,
+      word: wordData
+    }) => {
+      return (
+        <WordlistEntry
+          addToAllowedCategories={addToAllowedCategories}
+          categories={categories}
+          createdAt={createdAt}
+          description={description}
+          key={id}
+          id={id}
+          setAlertVisible={setAlertVisible}
+          setShowAddWordIcon={setShowAddWordIcon}
+          showCategories={rSelected === CATEGORIES}
+          showDescriptions={rSelected === DESCRIPTIONS}
+          wordData={wordData}
+        />
+      );
+    });
+  };
 
   const toggleAddWordModal = () => setAddWordModalIsOpen(!addWordModalIsOpen);
 
