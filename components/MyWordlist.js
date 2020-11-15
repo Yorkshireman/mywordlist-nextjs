@@ -26,9 +26,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     const id = target.getAttribute('id');
     const name = target.textContent;
 
-    if (allowedCategories.find(cat => cat.id === id || cat.name === name)) {
-      return;
-    }
+    if (allowedCategories.find(cat => cat.id === id || cat.name === name)) return;
 
     setAllowedCategories([
       ...allowedCategories,
