@@ -22,11 +22,7 @@ const CategoriesContainer = ({ addToAllowedCategories, categories, setShowAddWor
       ]
     };
 
-    setWordlistEntries([
-      ...wordlistEntries.slice(0, wordlistEntries.indexOf(existingWordlistEntry)),
-      newWordlistEntry,
-      ...wordlistEntries.slice(wordlistEntries.indexOf(existingWordlistEntry) + 1)
-    ]);
+    setWordlistEntries(wordlistEntries.map(i => i.id !== newWordlistEntry.id ? i : newWordlistEntry));
   };
 
   useEffect(() => {
