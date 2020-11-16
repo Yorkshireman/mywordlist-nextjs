@@ -34,10 +34,17 @@ const MyWordlist = ({ wordlistEntriesData }) => {
     ]);
   };
 
+  const entryHasAllRequiredCategories = ({ categories }) => {
+    const allowedCategoryNames = allowedCategories.map(({ name }) => name);
+    const entryCategoryNames = categories.map(({ name }) => name);
+    return allowedCategoryNames.every(allowedCategoryName => entryCategoryNames.includes(allowedCategoryName));
+  };
+
   const renderWordlistEntries = entries => {
-    const filteredEntries = entries.filter(({ categories }) => {
+    const filteredEntries = entries.filter(entry => {
       if (!allowedCategories.length) return true;
-      return allowedCategories.some(({ id }) => categories.find(category => category.id === id));
+
+      return entryHasAllRequiredCategories(entry);
     });
 
     return filteredEntries.map(({
