@@ -22,7 +22,6 @@ const WordlistEntry = ({
   },
   wordlistEntries
 }) => {
-  // const [categories, setCategories] = useState(initialCategories);
   const [reUploading, setReUploading] = useState(false);
   const [uploaded, setUploaded] = useState(Boolean(createdAt));
   const [uploading, setUploading] = useState(false);
