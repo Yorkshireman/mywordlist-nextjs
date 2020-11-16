@@ -12,19 +12,6 @@ const CategoriesContainer = ({ addToAllowedCategories, categories, setShowAddWor
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
   const [newCategoryNames, setNewCategoryNames] = useState();
 
-  const addCategoriesToWordlistEntry = (categories, wordlistEntryId) => {
-    const existingWordlistEntry = wordlistEntries.find(({ id }) => id === wordlistEntryId);
-    const newWordlistEntry = {
-      ...existingWordlistEntry,
-      categories: [
-        ...existingWordlistEntry.categories,
-        ...categories
-      ]
-    };
-
-    setWordlistEntries(wordlistEntries.map(i => i.id !== newWordlistEntry.id ? i : newWordlistEntry));
-  };
-
   useEffect(() => {
     if (!showAddCategoriesInput) return;
 
@@ -42,6 +29,19 @@ const CategoriesContainer = ({ addToAllowedCategories, categories, setShowAddWor
       setShowAddWordIcon(true);
     });
   }, [showAddCategoriesInput]);
+
+  const addCategoriesToWordlistEntry = (categories, wordlistEntryId) => {
+    const existingWordlistEntry = wordlistEntries.find(({ id }) => id === wordlistEntryId);
+    const newWordlistEntry = {
+      ...existingWordlistEntry,
+      categories: [
+        ...existingWordlistEntry.categories,
+        ...categories
+      ]
+    };
+
+    setWordlistEntries(wordlistEntries.map(i => i.id !== newWordlistEntry.id ? i : newWordlistEntry));
+  };
 
   const handleChange = ({ target: { value: name }}) => setNewCategoryNames(name.trim());
   const handleSubmit = async (e) => {
