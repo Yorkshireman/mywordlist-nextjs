@@ -6,11 +6,28 @@ import ResourcesService from '../services/resources-service';
 import Category from '../components/Category';
 import ValidationError from '../errors/validation-error';
 
-const CategoriesContainer = ({ addToAllowedCategories, categories, setCategories, setShowAddWordIcon, wordlistEntryId }) => {
+const CategoriesContainer = ({ addToAllowedCategories, categories, setShowAddWordIcon, setWordlistEntries, wordlistEntries, wordlistEntryId }) => {
   if (!categories) throw new ValidationError('categories should be an Array');
 
   const [showAddCategoriesInput, setShowAddCategoriesInput] = useState(false);
   const [newCategoryNames, setNewCategoryNames] = useState();
+
+  const addCategoriesToWordlistEntry = (categories, wordlistEntryId) => {
+    const existingWordlistEntry = wordlistEntries.find(({ id }) => id === wordlistEntryId);
+    const newWordlistEntry = {
+      ...existingWordlistEntry,
+      categories: [
+        ...existingWordlistEntry.categories,
+        ...categories
+      ]
+    };
+
+    setWordlistEntries([
+      ...wordlistEntries.slice(0, wordlistEntries.indexOf(existingWordlistEntry)),
+      newWordlistEntry,
+      ...wordlistEntries.slice(wordlistEntries.indexOf(existingWordlistEntry) + 1)
+    ]);
+  };
 
   useEffect(() => {
     if (!showAddCategoriesInput) return;
@@ -37,20 +54,25 @@ const CategoriesContainer = ({ addToAllowedCategories, categories, setCategories
     const newUniqueNames = newNames.filter(name => !categories.map(cat => cat.name).includes(name));
 
     setShowAddCategoriesInput(false);
+
     if (!newUniqueNames.length) return;
 
-    const newCategories = newUniqueNames.map(name => {
-      return {
+    const existingCategories = wordlistEntries.map(({ categories }) => categories);
+
+    const categoriesToAdd = newUniqueNames.map(name => {
+      return existingCategories.find(category => category.name === name) || {
         id: uuidv4(),
         name
       };
     });
 
-    setCategories(categories.concat(newCategories));
+    addCategoriesToWordlistEntry(categoriesToAdd, wordlistEntryId);
+
     document.getElementById('categories-submission-form').reset();
     setNewCategoryNames(null);
     const currentToken = window.localStorage.getItem('myWordlistAuthToken');
-    await ResourcesService.addCategories({ categories: newCategories, token: currentToken, wordlistEntryId });
+
+    await ResourcesService.addCategories({ categories: categoriesToAdd, token: currentToken, wordlistEntryId });
   };
 
   const toggleAddCategoriesInput = async () => {

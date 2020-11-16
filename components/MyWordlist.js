@@ -41,6 +41,9 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   };
 
   const renderWordlistEntries = entries => {
+    // console.log('============== start ================');
+    // console.log(JSON.stringify(entries, null, 2));
+    // console.log('=============== end ===============');
     const filteredEntries = entries.filter(entry => {
       if (!allowedCategories.length) return true;
 
@@ -64,9 +67,11 @@ const MyWordlist = ({ wordlistEntriesData }) => {
           id={id}
           setAlertVisible={setAlertVisible}
           setShowAddWordIcon={setShowAddWordIcon}
+          setWordlistEntries={setWordlistEntries}
           showCategories={rSelected === CATEGORIES}
           showDescriptions={rSelected === DESCRIPTIONS}
           wordData={wordData}
+          wordlistEntries={wordlistEntries}
         />
       );
     });
