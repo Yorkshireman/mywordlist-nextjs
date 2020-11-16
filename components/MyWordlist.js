@@ -41,9 +41,6 @@ const MyWordlist = ({ wordlistEntriesData }) => {
   };
 
   const renderWordlistEntries = entries => {
-    // console.log('============== start ================');
-    // console.log(JSON.stringify(entries, null, 2));
-    // console.log('=============== end ===============');
     const filteredEntries = entries.filter(entry => {
       if (!allowedCategories.length) return true;
 
