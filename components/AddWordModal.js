@@ -29,11 +29,7 @@ const AddWordModal = ({ isOpen, setWordlistEntries, wordlistEntries, toggle }) =
     }
   };
 
-  const handleSubmit = event => {
-    if (wordlistEntries.find(({ word: { name } }) => name === wordName)) {
-      return event.preventDefault();
-    }
-
+  const handleSubmit = () => {
     setWordlistEntries([wordlistEntry({ description, wordName }), ...wordlistEntries]);
   };
 
