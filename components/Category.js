@@ -1,12 +1,13 @@
 import ValidationError from '../errors/validation-error';
 
-const Category = ({ id, name, onClick }) => {
+const Category = ({ id, name, onClick, showDeleteIcon }) => {
+  if (!id) throw new ValidationError('id cannot be empty');
   if (!name) throw new ValidationError('name cannot be empty');
 
   return (
     <>
       <li className='category' id={id} onClick={onClick}>
-        {name}
+        <span id={id}>{name}</span>{ showDeleteIcon ? <span className='delete-icon' id={id}>x</span> : null}
       </li>
       <style jsx>{`
         .category {
@@ -21,6 +22,11 @@ const Category = ({ id, name, onClick }) => {
           margin: 4px 2px;
           cursor: pointer;
           border-radius: 16px;
+        }
+
+        .delete-icon {
+          color: grey;
+          margin-left: 6px;
         }
       `}</style>
     </>

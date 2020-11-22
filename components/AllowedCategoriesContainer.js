@@ -1,8 +1,13 @@
 import Category from './Category';
+import ValidationError from '../errors/validation-error';
 
 const AllowedCategoriesContainer = ({ allowedCategories, setAllowedCategories }) => {
   const removeFromAllowedCategories = ({ target }) => {
     const categoryId = target.getAttribute('id');
+    if (!categoryId) {
+      throw new ValidationError('category id null/undefined');
+    }
+
     setAllowedCategories(allowedCategories.filter(e => e.id !== categoryId));
   };
 
@@ -15,6 +20,7 @@ const AllowedCategoriesContainer = ({ allowedCategories, setAllowedCategories })
             id={id}
             name={name}
             onClick={removeFromAllowedCategories}
+            showDeleteIcon={true}
           />
         )}
       </ul>

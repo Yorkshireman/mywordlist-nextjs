@@ -7,6 +7,7 @@ import AllowedCategoriesContainer from './AllowedCategoriesContainer';
 import RefreshIcon from './RefreshIcon';
 import ViewConfigInterface from './ViewConfigInterface';
 import WordlistEntry from './WordlistEntry';
+import ValidationError from '../errors/validation-error';
 
 const rSelectedValues = {
   CATEGORIES: 'CATEGORIES',
@@ -24,6 +25,10 @@ const MyWordlist = ({ wordlistEntriesData }) => {
 
   const addToAllowedCategories = ({ target }) => {
     const id = target.getAttribute('id');
+    if (!id) {
+      throw new ValidationError('category id null/undefined');
+    }
+
     const name = target.textContent;
 
     if (allowedCategories.find(cat => cat.id === id)) return;
