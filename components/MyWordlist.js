@@ -91,7 +91,7 @@ const MyWordlist = ({ wordlistEntriesData }) => {
         Wordlist entry failed to upload. Tap the <RefreshIcon bottom='0.05em' height='0.85em' /> icon to try again.
       </Alert>
       <div style={{ display: 'flex' }}>
-        <AllowedCategoriesContainer allowedCategories={allowedCategories} />
+        <AllowedCategoriesContainer allowedCategories={allowedCategories} setAllowedCategories={setAllowedCategories} />
         <ViewConfigInterface {...viewConfigInterfaceProps} />
       </div>
       <AddWordModal {...addWordModalProps} />

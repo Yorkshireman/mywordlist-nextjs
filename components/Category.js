@@ -1,11 +1,11 @@
 import ValidationError from '../errors/validation-error';
 
-const Category = ({ addToAllowedCategories, id, name }) => {
+const Category = ({ id, name, onClick }) => {
   if (!name) throw new ValidationError('name cannot be empty');
 
   return (
     <>
-      <li className='category' id={id} onClick={addToAllowedCategories}>
+      <li className='category' id={id} onClick={onClick}>
         {name}
       </li>
       <style jsx>{`

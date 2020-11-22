@@ -80,7 +80,7 @@ const CategoriesContainer = ({ addToAllowedCategories, categories, setShowAddWor
   return (
     <>
       <ul style={{ listStyle: 'none', padding: 'none' }}>
-        {categories.map(({ id, name }) => <Category addToAllowedCategories={addToAllowedCategories} key={id} id={id} name={name} />)}
+        {categories.map(({ id, name }) => <Category key={id} id={id} name={name} onClick={addToAllowedCategories} />)}
         <li className='add-categories' onClick={toggleAddCategoriesInput}>add +</li>
       </ul>
       {showAddCategoriesInput &&
