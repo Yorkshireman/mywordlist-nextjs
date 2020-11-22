@@ -5,9 +5,9 @@ import AddWordIcon from './AddWordIcon';
 import AddWordModal from './AddWordModal';
 import AllowedCategoriesContainer from './AllowedCategoriesContainer';
 import RefreshIcon from './RefreshIcon';
+import ValidationError from '../errors/validation-error';
 import ViewConfigInterface from './ViewConfigInterface';
 import WordlistEntry from './WordlistEntry';
-import ValidationError from '../errors/validation-error';
 
 const rSelectedValues = {
   CATEGORIES: 'CATEGORIES',
