@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import AddWordIcon from './AddWordIcon';
 import AddWordModal from './AddWordModal';
-import AllowedCategoriesContainer from './AllowedCategoriesContainer';
+import AllowedCategoriesContainer from '../containers/AllowedCategoriesContainer';
 import RefreshIcon from './RefreshIcon';
 import ValidationError from '../errors/validation-error';
 import ViewConfigInterface from './ViewConfigInterface';

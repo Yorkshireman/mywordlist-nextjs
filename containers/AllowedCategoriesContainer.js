@@ -1,4 +1,4 @@
-import Category from './Category';
+import Category from '../components/Category';
 import ValidationError from '../errors/validation-error';
 
 const AllowedCategoriesContainer = ({ allowedCategories, setAllowedCategories }) => {
