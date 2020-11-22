@@ -21,7 +21,7 @@ const AddWordModal = ({ isOpen, setWordlistEntries, wordlistEntries, toggle }) =
 
   const handleChange = ({ target: { name, value } }) => {
     if (name === 'wordName') {
-      setWordName(value);
+      return setWordName(value);
     }
 
     if (name === 'description') {
