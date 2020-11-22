@@ -41,7 +41,16 @@ const AddWordModal = ({ isOpen, setWordlistEntries, wordlistEntries, toggle }) =
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for='wordName' style={{ marginBottom: '0' }}>Word:</Label>
-            <Input aria-label='word' id='name' minLength='2' maxLength='64' name='wordName' onChange={handleChange} type='text' />
+            <Input
+              aria-label='word'
+              id='name'
+              maxLength='64'
+              minLength='2'
+              name='wordName'
+              onChange={handleChange}
+              style={{ textTransform: 'lowercase' }}
+              type='text'
+            />
           </FormGroup>
           <FormGroup>
             <Label for='description' style={{ marginBottom: '0' }}>Description:</Label>
