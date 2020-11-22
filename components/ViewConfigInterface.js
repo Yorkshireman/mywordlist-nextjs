@@ -2,7 +2,7 @@ const ViewConfigInterface = ({ rSelected, rSelectedValues, setRSelected }) => {
   const { CATEGORIES, DESCRIPTIONS } = rSelectedValues;
   return (
     <section>
-      <ul style={{ listStyle: 'none', marginBottom: '0', textAlign: 'right' }}>
+      <ul>
         <li>
           <label>
             Categories
@@ -27,10 +27,26 @@ const ViewConfigInterface = ({ rSelected, rSelectedValues, setRSelected }) => {
         </li>
       </ul>
       <style jsx>{`
+        label {
+          display: flex;
+          justify-content: flex-end;
+        }
+
         .radio-input {
           margin-left: 5px;
           position: relative;
-          top: 1px;
+          top: 5px;
+        }
+
+        section {
+          margin-left: auto;
+          padding-left: 5px;
+        }
+
+        ul {
+          list-style: none;
+          margin-bottom: 0;
+          padding: 0;
         }
       `}</style>
     </section>

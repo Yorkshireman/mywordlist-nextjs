@@ -45,7 +45,7 @@ const SignIn = () => {
       return Router.push(successUrl);
     }
 
-    Router.push('/index');
+    Router.push('/mywordlist');
   };
 
   return (

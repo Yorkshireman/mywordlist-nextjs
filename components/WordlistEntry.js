@@ -7,19 +7,21 @@ import ResourcesService from '../services/resources-service';
 import { setAuthToken } from './helpers/setAuthToken';
 
 const WordlistEntry = ({
-  categories: initialCategories,
+  addToAllowedCategories,
+  categories,
   createdAt,
   description,
   id,
   setAlertVisible,
   setShowAddWordIcon,
+  setWordlistEntries,
   showCategories,
   showDescriptions,
   wordData: {
     name
-  }
+  },
+  wordlistEntries
 }) => {
-  const [categories, setCategories] = useState(initialCategories);
   const [reUploading, setReUploading] = useState(false);
   const [uploaded, setUploaded] = useState(Boolean(createdAt));
   const [uploading, setUploading] = useState(false);
@@ -70,7 +72,7 @@ const WordlistEntry = ({
     );
   };
 
-  const categoriesContainerProps = { setShowAddWordIcon, categories, setCategories, wordlistEntryId: id };
+  const categoriesContainerProps = { addToAllowedCategories, categories, setShowAddWordIcon, setWordlistEntries, wordlistEntries, wordlistEntryId: id };
   return (
     <>
       <li>
