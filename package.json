@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/Yorkshireman/mywordlist-nextjs#readme",
   "dependencies": {
-    "@zeit/next-css": "^1.0.1",
     "bootstrap": "^4.5.0",
     "next": "^11.0.1",
     "react": "^17.0.2",
