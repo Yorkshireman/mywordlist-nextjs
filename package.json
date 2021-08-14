@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "engines": {
     "node": "12.18.2",
-    "npm": "6.14.5"
+    "npm": "7.20.6"
   },
   "description": "",
   "main": "index.js",
@@ -26,12 +26,11 @@
   },
   "homepage": "https://github.com/Yorkshireman/mywordlist-nextjs#readme",
   "dependencies": {
-    "@zeit/next-css": "^1.0.1",
     "bootstrap": "^4.5.0",
-    "next": "^9.4.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "reactstrap": "^8.5.1",
+    "next": "^11.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "reactstrap": "^8.9.0",
     "uuid": "^8.2.0"
   },
   "devDependencies": {
